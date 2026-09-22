@@ -1,0 +1,2270 @@
+{
+ "backend": "Laya multilingual (локално, CPU)",
+ "namer": "BgGPT-Gemma-3-4B-IT-GGUF (Ollama)",
+ "posts": "eval_posts.json",
+ "right": 36,
+ "right_or_alt": 39,
+ "uncertain": 17,
+ "n": 50,
+ "results": [
+  {
+   "title": "Docker Compose за домашен сървър",
+   "expected": "Програмиране",
+   "pick": {
+    "kind": "existing",
+    "label": "Програмиране",
+    "p": 0.864,
+    "confidence": 0.712,
+    "uncertain": false
+   },
+   "alternative": {
+    "kind": "existing",
+    "label": "Готвене",
+    "p": 0.01
+   },
+   "explain": {
+    "existing": [
+     {
+      "label": "Програмиране",
+      "p": 0.864
+     },
+     {
+      "label": "__other__",
+      "p": 0.119
+     },
+     {
+      "label": "Готвене",
+      "p": 0.01
+     },
+     {
+      "label": "Пътувания",
+      "p": 0.004
+     },
+     {
+      "label": "Лични финанси",
+      "p": 0.003
+     }
+    ],
+    "existing_confidence": 0.712
+   },
+   "hit": true,
+   "alt_hit": false,
+   "elapsed_ms": 242
+  },
+  {
+   "title": "Защо заявката ми вървеше 40 секунди",
+   "expected": "Програмиране",
+   "pick": {
+    "kind": "existing",
+    "label": "Програмиране",
+    "p": 0.679,
+    "confidence": 0.388,
+    "uncertain": true
+   },
+   "alternative": {
+    "kind": "existing",
+    "label": "Готвене",
+    "p": 0.111
+   },
+   "explain": {
+    "existing": [
+     {
+      "label": "Програмиране",
+      "p": 0.679
+     },
+     {
+      "label": "__other__",
+      "p": 0.156
+     },
+     {
+      "label": "Готвене",
+      "p": 0.111
+     },
+     {
+      "label": "Пътувания",
+      "p": 0.04
+     },
+     {
+      "label": "Лични финанси",
+      "p": 0.014
+     }
+    ],
+    "existing_confidence": 0.388
+   },
+   "hit": true,
+   "alt_hit": false,
+   "elapsed_ms": 199
+  },
+  {
+   "title": "Generics в TypeScript без болка",
+   "expected": "Програмиране",
+   "pick": {
+    "kind": "existing",
+    "label": "Програмиране",
+    "p": 0.707,
+    "confidence": 0.56,
+    "uncertain": false
+   },
+   "alternative": {
+    "kind": "existing",
+    "label": "Готвене",
+    "p": 0.017
+   },
+   "explain": {
+    "existing": [
+     {
+      "label": "Програмиране",
+      "p": 0.707
+     },
+     {
+      "label": "__other__",
+      "p": 0.269
+     },
+     {
+      "label": "Готвене",
+      "p": 0.017
+     },
+     {
+      "label": "Пътувания",
+      "p": 0.004
+     },
+     {
+      "label": "Лични финанси",
+      "p": 0.003
+     }
+    ],
+    "existing_confidence": 0.56
+   },
+   "hit": true,
+   "alt_hit": false,
+   "elapsed_ms": 211
+  },
+  {
+   "title": "Тестове с pytest от първия ден",
+   "expected": "Програмиране",
+   "pick": {
+    "kind": "new",
+    "label": "Технологии",
+    "description": "technology",
+    "p": 0.408,
+    "confidence": 0.237,
+    "uncertain": true
+   },
+   "alternative": {
+    "kind": "existing",
+    "label": "Готвене",
+    "p": 0.292
+   },
+   "explain": {
+    "existing": [
+     {
+      "label": "__other__",
+      "p": 0.408
+     },
+     {
+      "label": "Готвене",
+      "p": 0.292
+     },
+     {
+      "label": "Програмиране",
+      "p": 0.262
+     },
+     {
+      "label": "Пътувания",
+      "p": 0.023
+     },
+     {
+      "label": "Лични финанси",
+      "p": 0.015
+     }
+    ],
+    "existing_confidence": 0.237
+   },
+   "hit": false,
+   "alt_hit": false,
+   "elapsed_ms": 27630
+  },
+  {
+   "title": "Регулярни изрази за начинаещи",
+   "expected": "Програмиране",
+   "pick": {
+    "kind": "existing",
+    "label": "Програмиране",
+    "p": 0.816,
+    "confidence": 0.582,
+    "uncertain": false
+   },
+   "alternative": {
+    "kind": "existing",
+    "label": "Готвене",
+    "p": 0.042
+   },
+   "explain": {
+    "existing": [
+     {
+      "label": "Програмиране",
+      "p": 0.816
+     },
+     {
+      "label": "__other__",
+      "p": 0.11
+     },
+     {
+      "label": "Готвене",
+      "p": 0.042
+     },
+     {
+      "label": "Пътувания",
+      "p": 0.018
+     },
+     {
+      "label": "Лични финанси",
+      "p": 0.014
+     }
+    ],
+    "existing_confidence": 0.582
+   },
+   "hit": true,
+   "alt_hit": false,
+   "elapsed_ms": 362
+  },
+  {
+   "title": "Рефакторинг на стар PHP проект",
+   "expected": "Програмиране",
+   "pick": {
+    "kind": "existing",
+    "label": "Програмиране",
+    "p": 0.812,
+    "confidence": 0.64,
+    "uncertain": false
+   },
+   "alternative": {
+    "kind": "existing",
+    "label": "Готвене",
+    "p": 0.009
+   },
+   "explain": {
+    "existing": [
+     {
+      "label": "Програмиране",
+      "p": 0.812
+     },
+     {
+      "label": "__other__",
+      "p": 0.164
+     },
+     {
+      "label": "Готвене",
+      "p": 0.009
+     },
+     {
+      "label": "Пътувания",
+      "p": 0.007
+     },
+     {
+      "label": "Лични финанси",
+      "p": 0.007
+     }
+    ],
+    "existing_confidence": 0.64
+   },
+   "hit": true,
+   "alt_hit": false,
+   "elapsed_ms": 318
+  },
+  {
+   "title": "Програмиране за деца със Scratch",
+   "expected": "Програмиране",
+   "pick": {
+    "kind": "existing",
+    "label": "Програмиране",
+    "p": 1.0,
+    "confidence": 0.998,
+    "uncertain": false
+   },
+   "alternative": {
+    "kind": "existing",
+    "label": "Готвене",
+    "p": 0.0
+   },
+   "explain": {
+    "existing": [
+     {
+      "label": "Програмиране",
+      "p": 1.0
+     },
+     {
+      "label": "Готвене",
+      "p": 0.0
+     },
+     {
+      "label": "__other__",
+      "p": 0.0
+     },
+     {
+      "label": "Пътувания",
+      "p": 0.0
+     },
+     {
+      "label": "Лични финанси",
+      "p": 0.0
+     }
+    ],
+    "existing_confidence": 0.998
+   },
+   "hit": true,
+   "alt_hit": false,
+   "elapsed_ms": 175
+  },
+  {
+   "title": "Рим за три дни",
+   "expected": "Пътувания",
+   "pick": {
+    "kind": "existing",
+    "label": "Пътувания",
+    "p": 0.996,
+    "confidence": 0.981,
+    "uncertain": false
+   },
+   "alternative": {
+    "kind": "existing",
+    "label": "Готвене",
+    "p": 0.0
+   },
+   "explain": {
+    "existing": [
+     {
+      "label": "Пътувания",
+      "p": 0.996
+     },
+     {
+      "label": "__other__",
+      "p": 0.004
+     },
+     {
+      "label": "Готвене",
+      "p": 0.0
+     },
+     {
+      "label": "Програмиране",
+      "p": 0.0
+     },
+     {
+      "label": "Лични финанси",
+      "p": 0.0
+     }
+    ],
+    "existing_confidence": 0.981
+   },
+   "hit": true,
+   "alt_hit": false,
+   "elapsed_ms": 188
+  },
+  {
+   "title": "Как намирам евтини самолетни билети",
+   "expected": "Пътувания",
+   "pick": {
+    "kind": "existing",
+    "label": "Пътувания",
+    "p": 1.0,
+    "confidence": 0.998,
+    "uncertain": false
+   },
+   "alternative": {
+    "kind": "existing",
+    "label": "Лични финанси",
+    "p": 0.0
+   },
+   "explain": {
+    "existing": [
+     {
+      "label": "Пътувания",
+      "p": 1.0
+     },
+     {
+      "label": "Лични финанси",
+      "p": 0.0
+     },
+     {
+      "label": "__other__",
+      "p": 0.0
+     },
+     {
+      "label": "Програмиране",
+      "p": 0.0
+     },
+     {
+      "label": "Готвене",
+      "p": 0.0
+     }
+    ],
+    "existing_confidence": 0.998
+   },
+   "hit": true,
+   "alt_hit": false,
+   "elapsed_ms": 230
+  },
+  {
+   "title": "Къмпинг край Попово езеро",
+   "expected": "Пътувания",
+   "pick": {
+    "kind": "existing",
+    "label": "Пътувания",
+    "p": 0.779,
+    "confidence": 0.567,
+    "uncertain": false
+   },
+   "alternative": {
+    "kind": "existing",
+    "label": "Готвене",
+    "p": 0.042
+   },
+   "explain": {
+    "existing": [
+     {
+      "label": "Пътувания",
+      "p": 0.779
+     },
+     {
+      "label": "__other__",
+      "p": 0.163
+     },
+     {
+      "label": "Готвене",
+      "p": 0.042
+     },
+     {
+      "label": "Лични финанси",
+      "p": 0.012
+     },
+     {
+      "label": "Програмиране",
+      "p": 0.004
+     }
+    ],
+    "existing_confidence": 0.567
+   },
+   "hit": true,
+   "alt_hit": false,
+   "elapsed_ms": 185
+  },
+  {
+   "title": "Япония с JR Pass",
+   "expected": "Пътувания",
+   "pick": {
+    "kind": "existing",
+    "label": "Пътувания",
+    "p": 1.0,
+    "confidence": 1.0,
+    "uncertain": false
+   },
+   "alternative": {
+    "kind": "existing",
+    "label": "Програмиране",
+    "p": 0.0
+   },
+   "explain": {
+    "existing": [
+     {
+      "label": "Пътувания",
+      "p": 1.0
+     },
+     {
+      "label": "Програмиране",
+      "p": 0.0
+     },
+     {
+      "label": "Готвене",
+      "p": 0.0
+     },
+     {
+      "label": "Лични финанси",
+      "p": 0.0
+     },
+     {
+      "label": "__other__",
+      "p": 0.0
+     }
+    ],
+    "existing_confidence": 1.0
+   },
+   "hit": true,
+   "alt_hit": false,
+   "elapsed_ms": 200
+  },
+  {
+   "title": "С кола из Северна Гърция",
+   "expected": "Пътувания",
+   "pick": {
+    "kind": "existing",
+    "label": "Пътувания",
+    "p": 0.999,
+    "confidence": 0.994,
+    "uncertain": false
+   },
+   "alternative": {
+    "kind": "existing",
+    "label": "Готвене",
+    "p": 0.0
+   },
+   "explain": {
+    "existing": [
+     {
+      "label": "Пътувания",
+      "p": 0.999
+     },
+     {
+      "label": "__other__",
+      "p": 0.001
+     },
+     {
+      "label": "Готвене",
+      "p": 0.0
+     },
+     {
+      "label": "Лични финанси",
+      "p": 0.0
+     },
+     {
+      "label": "Програмиране",
+      "p": 0.0
+     }
+    ],
+    "existing_confidence": 0.994
+   },
+   "hit": true,
+   "alt_hit": false,
+   "elapsed_ms": 188
+  },
+  {
+   "title": "Будапеща с малък бюджет",
+   "expected": "Пътувания",
+   "pick": {
+    "kind": "existing",
+    "label": "Пътувания",
+    "p": 0.998,
+    "confidence": 0.992,
+    "uncertain": false
+   },
+   "alternative": {
+    "kind": "existing",
+    "label": "Лични финанси",
+    "p": 0.001
+   },
+   "explain": {
+    "existing": [
+     {
+      "label": "Пътувания",
+      "p": 0.998
+     },
+     {
+      "label": "Лични финанси",
+      "p": 0.001
+     },
+     {
+      "label": "__other__",
+      "p": 0.001
+     },
+     {
+      "label": "Готвене",
+      "p": 0.0
+     },
+     {
+      "label": "Програмиране",
+      "p": 0.0
+     }
+    ],
+    "existing_confidence": 0.992
+   },
+   "hit": true,
+   "alt_hit": false,
+   "elapsed_ms": 171
+  },
+  {
+   "title": "Виза за САЩ: моят опит",
+   "expected": "Пътувания",
+   "pick": {
+    "kind": "existing",
+    "label": "Програмиране",
+    "p": 0.996,
+    "confidence": 0.983,
+    "uncertain": false
+   },
+   "alternative": {
+    "kind": "existing",
+    "label": "Пътувания",
+    "p": 0.003
+   },
+   "explain": {
+    "existing": [
+     {
+      "label": "Програмиране",
+      "p": 0.996
+     },
+     {
+      "label": "Пътувания",
+      "p": 0.003
+     },
+     {
+      "label": "Лични финанси",
+      "p": 0.001
+     },
+     {
+      "label": "__other__",
+      "p": 0.0
+     },
+     {
+      "label": "Готвене",
+      "p": 0.0
+     }
+    ],
+    "existing_confidence": 0.983
+   },
+   "hit": false,
+   "alt_hit": true,
+   "elapsed_ms": 186
+  },
+  {
+   "title": "Мусака без грешка",
+   "expected": "Готвене",
+   "pick": {
+    "kind": "existing",
+    "label": "Готвене",
+    "p": 0.991,
+    "confidence": 0.963,
+    "uncertain": false
+   },
+   "alternative": {
+    "kind": "existing",
+    "label": "Лични финанси",
+    "p": 0.002
+   },
+   "explain": {
+    "existing": [
+     {
+      "label": "Готвене",
+      "p": 0.991
+     },
+     {
+      "label": "__other__",
+      "p": 0.007
+     },
+     {
+      "label": "Лични финанси",
+      "p": 0.002
+     },
+     {
+      "label": "Пътувания",
+      "p": 0.0
+     },
+     {
+      "label": "Програмиране",
+      "p": 0.0
+     }
+    ],
+    "existing_confidence": 0.963
+   },
+   "hit": true,
+   "alt_hit": false,
+   "elapsed_ms": 163
+  },
+  {
+   "title": "Кекс с тиква и канела",
+   "expected": "Готвене",
+   "pick": {
+    "kind": "existing",
+    "label": "Готвене",
+    "p": 1.0,
+    "confidence": 0.998,
+    "uncertain": false
+   },
+   "alternative": {
+    "kind": "existing",
+    "label": "Програмиране",
+    "p": 0.0
+   },
+   "explain": {
+    "existing": [
+     {
+      "label": "Готвене",
+      "p": 1.0
+     },
+     {
+      "label": "__other__",
+      "p": 0.0
+     },
+     {
+      "label": "Програмиране",
+      "p": 0.0
+     },
+     {
+      "label": "Пътувания",
+      "p": 0.0
+     },
+     {
+      "label": "Лични финанси",
+      "p": 0.0
+     }
+    ],
+    "existing_confidence": 0.998
+   },
+   "hit": true,
+   "alt_hit": false,
+   "elapsed_ms": 169
+  },
+  {
+   "title": "Супа топчета като в детството",
+   "expected": "Готвене",
+   "pick": {
+    "kind": "existing",
+    "label": "Готвене",
+    "p": 0.997,
+    "confidence": 0.986,
+    "uncertain": false
+   },
+   "alternative": {
+    "kind": "existing",
+    "label": "Лични финанси",
+    "p": 0.001
+   },
+   "explain": {
+    "existing": [
+     {
+      "label": "Готвене",
+      "p": 0.997
+     },
+     {
+      "label": "__other__",
+      "p": 0.002
+     },
+     {
+      "label": "Лични финанси",
+      "p": 0.001
+     },
+     {
+      "label": "Програмиране",
+      "p": 0.0
+     },
+     {
+      "label": "Пътувания",
+      "p": 0.0
+     }
+    ],
+    "existing_confidence": 0.986
+   },
+   "hit": true,
+   "alt_hit": false,
+   "elapsed_ms": 151
+  },
+  {
+   "title": "Суши у дома",
+   "expected": "Готвене",
+   "pick": {
+    "kind": "existing",
+    "label": "Готвене",
+    "p": 0.997,
+    "confidence": 0.985,
+    "uncertain": false
+   },
+   "alternative": {
+    "kind": "existing",
+    "label": "Лични финанси",
+    "p": 0.001
+   },
+   "explain": {
+    "existing": [
+     {
+      "label": "Готвене",
+      "p": 0.997
+     },
+     {
+      "label": "__other__",
+      "p": 0.002
+     },
+     {
+      "label": "Лични финанси",
+      "p": 0.001
+     },
+     {
+      "label": "Програмиране",
+      "p": 0.0
+     },
+     {
+      "label": "Пътувания",
+      "p": 0.0
+     }
+    ],
+    "existing_confidence": 0.985
+   },
+   "hit": true,
+   "alt_hit": false,
+   "elapsed_ms": 153
+  },
+  {
+   "title": "Лютеница за зимата",
+   "expected": "Готвене",
+   "pick": {
+    "kind": "existing",
+    "label": "Готвене",
+    "p": 1.0,
+    "confidence": 0.998,
+    "uncertain": false
+   },
+   "alternative": {
+    "kind": "existing",
+    "label": "Програмиране",
+    "p": 0.0
+   },
+   "explain": {
+    "existing": [
+     {
+      "label": "Готвене",
+      "p": 1.0
+     },
+     {
+      "label": "__other__",
+      "p": 0.0
+     },
+     {
+      "label": "Програмиране",
+      "p": 0.0
+     },
+     {
+      "label": "Пътувания",
+      "p": 0.0
+     },
+     {
+      "label": "Лични финанси",
+      "p": 0.0
+     }
+    ],
+    "existing_confidence": 0.998
+   },
+   "hit": true,
+   "alt_hit": false,
+   "elapsed_ms": 170
+  },
+  {
+   "title": "Седмица веган менюта",
+   "expected": "Готвене",
+   "pick": {
+    "kind": "existing",
+    "label": "Готвене",
+    "p": 1.0,
+    "confidence": 0.997,
+    "uncertain": false
+   },
+   "alternative": {
+    "kind": "existing",
+    "label": "Програмиране",
+    "p": 0.0
+   },
+   "explain": {
+    "existing": [
+     {
+      "label": "Готвене",
+      "p": 1.0
+     },
+     {
+      "label": "__other__",
+      "p": 0.0
+     },
+     {
+      "label": "Програмиране",
+      "p": 0.0
+     },
+     {
+      "label": "Пътувания",
+      "p": 0.0
+     },
+     {
+      "label": "Лични финанси",
+      "p": 0.0
+     }
+    ],
+    "existing_confidence": 0.997
+   },
+   "hit": true,
+   "alt_hit": false,
+   "elapsed_ms": 169
+  },
+  {
+   "title": "Кисело зеле в буркан",
+   "expected": "Готвене",
+   "pick": {
+    "kind": "existing",
+    "label": "Готвене",
+    "p": 0.994,
+    "confidence": 0.974,
+    "uncertain": false
+   },
+   "alternative": {
+    "kind": "existing",
+    "label": "Лични финанси",
+    "p": 0.0
+   },
+   "explain": {
+    "existing": [
+     {
+      "label": "Готвене",
+      "p": 0.994
+     },
+     {
+      "label": "__other__",
+      "p": 0.005
+     },
+     {
+      "label": "Лични финанси",
+      "p": 0.0
+     },
+     {
+      "label": "Пътувания",
+      "p": 0.0
+     },
+     {
+      "label": "Програмиране",
+      "p": 0.0
+     }
+    ],
+    "existing_confidence": 0.974
+   },
+   "hit": true,
+   "alt_hit": false,
+   "elapsed_ms": 171
+  },
+  {
+   "title": "ETF за начинаещи",
+   "expected": "Лични финанси",
+   "pick": {
+    "kind": "new",
+    "label": "Инвестиране",
+    "description": "investing",
+    "p": 0.548,
+    "confidence": 0.25,
+    "uncertain": true
+   },
+   "alternative": {
+    "kind": "existing",
+    "label": "Лични финанси",
+    "p": 0.197
+   },
+   "explain": {
+    "existing": [
+     {
+      "label": "__other__",
+      "p": 0.548
+     },
+     {
+      "label": "Лични финанси",
+      "p": 0.197
+     },
+     {
+      "label": "Програмиране",
+      "p": 0.126
+     },
+     {
+      "label": "Готвене",
+      "p": 0.121
+     },
+     {
+      "label": "Пътувания",
+      "p": 0.009
+     }
+    ],
+    "existing_confidence": 0.25
+   },
+   "hit": false,
+   "alt_hit": true,
+   "elapsed_ms": 5636
+  },
+  {
+   "title": "Бюджет по правилото 50/30/20",
+   "expected": "Лични финанси",
+   "pick": {
+    "kind": "existing",
+    "label": "Лични финанси",
+    "p": 0.951,
+    "confidence": 0.86,
+    "uncertain": false
+   },
+   "alternative": {
+    "kind": "existing",
+    "label": "Готвене",
+    "p": 0.007
+   },
+   "explain": {
+    "existing": [
+     {
+      "label": "Лични финанси",
+      "p": 0.951
+     },
+     {
+      "label": "__other__",
+      "p": 0.041
+     },
+     {
+      "label": "Готвене",
+      "p": 0.007
+     },
+     {
+      "label": "Пътувания",
+      "p": 0.001
+     },
+     {
+      "label": "Програмиране",
+      "p": 0.001
+     }
+    ],
+    "existing_confidence": 0.86
+   },
+   "hit": true,
+   "alt_hit": false,
+   "elapsed_ms": 255
+  },
+  {
+   "title": "Годишната данъчна декларация",
+   "expected": "Лични финанси",
+   "pick": {
+    "kind": "new",
+    "label": "Финанси",
+    "description": "finance",
+    "p": 0.546,
+    "confidence": 0.381,
+    "uncertain": true
+   },
+   "alternative": {
+    "kind": "existing",
+    "label": "Лични финанси",
+    "p": 0.355
+   },
+   "explain": {
+    "existing": [
+     {
+      "label": "__other__",
+      "p": 0.546
+     },
+     {
+      "label": "Лични финанси",
+      "p": 0.355
+     },
+     {
+      "label": "Програмиране",
+      "p": 0.075
+     },
+     {
+      "label": "Готвене",
+      "p": 0.016
+     },
+     {
+      "label": "Пътувания",
+      "p": 0.007
+     }
+    ],
+    "existing_confidence": 0.381
+   },
+   "hit": false,
+   "alt_hit": true,
+   "elapsed_ms": 5468
+  },
+  {
+   "title": "Втори пенсионен стълб: да сменя ли фонда",
+   "expected": "Лични финанси",
+   "pick": {
+    "kind": "existing",
+    "label": "Лични финанси",
+    "p": 0.92,
+    "confidence": 0.799,
+    "uncertain": false
+   },
+   "alternative": {
+    "kind": "existing",
+    "label": "Готвене",
+    "p": 0.007
+   },
+   "explain": {
+    "existing": [
+     {
+      "label": "Лични финанси",
+      "p": 0.92
+     },
+     {
+      "label": "__other__",
+      "p": 0.068
+     },
+     {
+      "label": "Готвене",
+      "p": 0.007
+     },
+     {
+      "label": "Пътувания",
+      "p": 0.003
+     },
+     {
+      "label": "Програмиране",
+      "p": 0.002
+     }
+    ],
+    "existing_confidence": 0.799
+   },
+   "hit": true,
+   "alt_hit": false,
+   "elapsed_ms": 247
+  },
+  {
+   "title": "Как изплатих кредитната карта",
+   "expected": "Лични финанси",
+   "pick": {
+    "kind": "existing",
+    "label": "Лични финанси",
+    "p": 0.985,
+    "confidence": 0.943,
+    "uncertain": false
+   },
+   "alternative": {
+    "kind": "existing",
+    "label": "Готвене",
+    "p": 0.004
+   },
+   "explain": {
+    "existing": [
+     {
+      "label": "Лични финанси",
+      "p": 0.985
+     },
+     {
+      "label": "__other__",
+      "p": 0.01
+     },
+     {
+      "label": "Готвене",
+      "p": 0.004
+     },
+     {
+      "label": "Програмиране",
+      "p": 0.001
+     },
+     {
+      "label": "Пътувания",
+      "p": 0.0
+     }
+    ],
+    "existing_confidence": 0.943
+   },
+   "hit": true,
+   "alt_hit": false,
+   "elapsed_ms": 207
+  },
+  {
+   "title": "Фонд за спешни случаи",
+   "expected": "Лични финанси",
+   "pick": {
+    "kind": "existing",
+    "label": "Лични финанси",
+    "p": 0.922,
+    "confidence": 0.791,
+    "uncertain": false
+   },
+   "alternative": {
+    "kind": "existing",
+    "label": "Готвене",
+    "p": 0.009
+   },
+   "explain": {
+    "existing": [
+     {
+      "label": "Лични финанси",
+      "p": 0.922
+     },
+     {
+      "label": "__other__",
+      "p": 0.058
+     },
+     {
+      "label": "Готвене",
+      "p": 0.009
+     },
+     {
+      "label": "Пътувания",
+      "p": 0.008
+     },
+     {
+      "label": "Програмиране",
+      "p": 0.003
+     }
+    ],
+    "existing_confidence": 0.791
+   },
+   "hit": true,
+   "alt_hit": false,
+   "elapsed_ms": 191
+  },
+  {
+   "title": "Колко ми струва колата на месец",
+   "expected": "Лични финанси",
+   "pick": {
+    "kind": "existing",
+    "label": "Лични финанси",
+    "p": 0.874,
+    "confidence": 0.741,
+    "uncertain": false
+   },
+   "alternative": {
+    "kind": "existing",
+    "label": "Готвене",
+    "p": 0.004
+   },
+   "explain": {
+    "existing": [
+     {
+      "label": "Лични финанси",
+      "p": 0.874
+     },
+     {
+      "label": "__other__",
+      "p": 0.118
+     },
+     {
+      "label": "Готвене",
+      "p": 0.004
+     },
+     {
+      "label": "Програмиране",
+      "p": 0.002
+     },
+     {
+      "label": "Пътувания",
+      "p": 0.002
+     }
+    ],
+    "existing_confidence": 0.741
+   },
+   "hit": true,
+   "alt_hit": false,
+   "elapsed_ms": 196
+  },
+  {
+   "title": "Първите ми снимки с ръчни настройки",
+   "expected": {
+    "new": "Фотография"
+   },
+   "pick": {
+    "kind": "new",
+    "label": "Фотография",
+    "description": "photography",
+    "p": 0.705,
+    "confidence": 0.37,
+    "uncertain": true
+   },
+   "alternative": {
+    "kind": "existing",
+    "label": "Програмиране",
+    "p": 0.091
+   },
+   "explain": {
+    "existing": [
+     {
+      "label": "__other__",
+      "p": 0.705
+     },
+     {
+      "label": "Програмиране",
+      "p": 0.091
+     },
+     {
+      "label": "Готвене",
+      "p": 0.072
+     },
+     {
+      "label": "Лични финанси",
+      "p": 0.067
+     },
+     {
+      "label": "Пътувания",
+      "p": 0.065
+     }
+    ],
+    "existing_confidence": 0.37
+   },
+   "hit": true,
+   "alt_hit": false,
+   "elapsed_ms": 5377
+  },
+  {
+   "title": "Когато детето не иска да спи",
+   "expected": {
+    "new": "Родителство"
+   },
+   "pick": {
+    "kind": "new",
+    "label": "Семейство",
+    "description": "family",
+    "p": 0.719,
+    "confidence": 0.447,
+    "uncertain": true
+   },
+   "alternative": {
+    "kind": "existing",
+    "label": "Готвене",
+    "p": 0.152
+   },
+   "explain": {
+    "existing": [
+     {
+      "label": "__other__",
+      "p": 0.719
+     },
+     {
+      "label": "Готвене",
+      "p": 0.152
+     },
+     {
+      "label": "Лични финанси",
+      "p": 0.09
+     },
+     {
+      "label": "Програмиране",
+      "p": 0.025
+     },
+     {
+      "label": "Пътувания",
+      "p": 0.013
+     }
+    ],
+    "existing_confidence": 0.447
+   },
+   "hit": true,
+   "alt_hit": false,
+   "elapsed_ms": 5610
+  },
+  {
+   "title": "Йога за схванат гръб",
+   "expected": {
+    "new": "Здраве и фитнес"
+   },
+   "pick": {
+    "kind": "new",
+    "label": "Здраве и уелнес",
+    "description": "health and wellness",
+    "p": 0.676,
+    "confidence": 0.459,
+    "uncertain": true
+   },
+   "alternative": {
+    "kind": "existing",
+    "label": "Програмиране",
+    "p": 0.254
+   },
+   "explain": {
+    "existing": [
+     {
+      "label": "__other__",
+      "p": 0.676
+     },
+     {
+      "label": "Програмиране",
+      "p": 0.254
+     },
+     {
+      "label": "Готвене",
+      "p": 0.032
+     },
+     {
+      "label": "Лични финанси",
+      "p": 0.025
+     },
+     {
+      "label": "Пътувания",
+      "p": 0.013
+     }
+    ],
+    "existing_confidence": 0.459
+   },
+   "hit": true,
+   "alt_hit": false,
+   "elapsed_ms": 6127
+  },
+  {
+   "title": "Рози в двора",
+   "expected": {
+    "new": "Градинарство"
+   },
+   "pick": {
+    "kind": "existing",
+    "label": "Готвене",
+    "p": 0.933,
+    "confidence": 0.811,
+    "uncertain": false
+   },
+   "alternative": {
+    "kind": "existing",
+    "label": "Пътувания",
+    "p": 0.012
+   },
+   "explain": {
+    "existing": [
+     {
+      "label": "Готвене",
+      "p": 0.933
+     },
+     {
+      "label": "__other__",
+      "p": 0.049
+     },
+     {
+      "label": "Пътувания",
+      "p": 0.012
+     },
+     {
+      "label": "Програмиране",
+      "p": 0.004
+     },
+     {
+      "label": "Лични финанси",
+      "p": 0.003
+     }
+    ],
+    "existing_confidence": 0.811
+   },
+   "hit": false,
+   "alt_hit": false,
+   "elapsed_ms": 230
+  },
+  {
+   "title": "Китара след 40",
+   "expected": {
+    "new": "Музика"
+   },
+   "pick": {
+    "kind": "new",
+    "label": "Музика",
+    "description": "music",
+    "p": 0.345,
+    "confidence": 0.177,
+    "uncertain": true
+   },
+   "alternative": {
+    "kind": "existing",
+    "label": "Готвене",
+    "p": 0.303
+   },
+   "explain": {
+    "existing": [
+     {
+      "label": "__other__",
+      "p": 0.345
+     },
+     {
+      "label": "Готвене",
+      "p": 0.303
+     },
+     {
+      "label": "Програмиране",
+      "p": 0.279
+     },
+     {
+      "label": "Пътувания",
+      "p": 0.041
+     },
+     {
+      "label": "Лични финанси",
+      "p": 0.031
+     }
+    ],
+    "existing_confidence": 0.177
+   },
+   "hit": true,
+   "alt_hit": false,
+   "elapsed_ms": 5572
+  },
+  {
+   "title": "'Дюн 2' - ревю",
+   "expected": {
+    "new": "Филми"
+   },
+   "pick": {
+    "kind": "new",
+    "label": "Кино",
+    "description": "movies",
+    "p": 0.867,
+    "confidence": 0.649,
+    "uncertain": false
+   },
+   "alternative": {
+    "kind": "existing",
+    "label": "Готвене",
+    "p": 0.057
+   },
+   "explain": {
+    "existing": [
+     {
+      "label": "__other__",
+      "p": 0.867
+     },
+     {
+      "label": "Готвене",
+      "p": 0.057
+     },
+     {
+      "label": "Пътувания",
+      "p": 0.031
+     },
+     {
+      "label": "Лични финанси",
+      "p": 0.03
+     },
+     {
+      "label": "Програмиране",
+      "p": 0.015
+     }
+    ],
+    "existing_confidence": 0.649
+   },
+   "hit": true,
+   "alt_hit": false,
+   "elapsed_ms": 5712
+  },
+  {
+   "title": "Настолни игри за четирима",
+   "expected": {
+    "new": "Настолни игри"
+   },
+   "pick": {
+    "kind": "existing",
+    "label": "Програмиране",
+    "p": 0.548,
+    "confidence": 0.273,
+    "uncertain": true
+   },
+   "alternative": {
+    "kind": "existing",
+    "label": "Готвене",
+    "p": 0.074
+   },
+   "explain": {
+    "existing": [
+     {
+      "label": "Програмиране",
+      "p": 0.548
+     },
+     {
+      "label": "__other__",
+      "p": 0.279
+     },
+     {
+      "label": "Готвене",
+      "p": 0.074
+     },
+     {
+      "label": "Пътувания",
+      "p": 0.063
+     },
+     {
+      "label": "Лични финанси",
+      "p": 0.035
+     }
+    ],
+    "existing_confidence": 0.273
+   },
+   "hit": false,
+   "alt_hit": false,
+   "elapsed_ms": 296
+  },
+  {
+   "title": "Риболов на язовир Искър",
+   "expected": {
+    "new": "Риболов"
+   },
+   "pick": {
+    "kind": "existing",
+    "label": "Пътувания",
+    "p": 0.422,
+    "confidence": 0.255,
+    "uncertain": true
+   },
+   "alternative": {
+    "kind": "existing",
+    "label": "Готвене",
+    "p": 0.174
+   },
+   "explain": {
+    "existing": [
+     {
+      "label": "Пътувания",
+      "p": 0.422
+     },
+     {
+      "label": "__other__",
+      "p": 0.359
+     },
+     {
+      "label": "Готвене",
+      "p": 0.174
+     },
+     {
+      "label": "Лични финанси",
+      "p": 0.035
+     },
+     {
+      "label": "Програмиране",
+      "p": 0.01
+     }
+    ],
+    "existing_confidence": 0.255
+   },
+   "hit": false,
+   "alt_hit": false,
+   "elapsed_ms": 209
+  },
+  {
+   "title": "Сменихме плочките в банята сами",
+   "expected": {
+    "new": "Направи си сам"
+   },
+   "pick": {
+    "kind": "new",
+    "label": "Дом и ремонт",
+    "description": "home improvement",
+    "p": 0.558,
+    "confidence": 0.374,
+    "uncertain": true
+   },
+   "alternative": {
+    "kind": "existing",
+    "label": "Лични финанси",
+    "p": 0.34
+   },
+   "explain": {
+    "existing": [
+     {
+      "label": "__other__",
+      "p": 0.558
+     },
+     {
+      "label": "Лични финанси",
+      "p": 0.34
+     },
+     {
+      "label": "Готвене",
+      "p": 0.068
+     },
+     {
+      "label": "Програмиране",
+      "p": 0.025
+     },
+     {
+      "label": "Пътувания",
+      "p": 0.008
+     }
+    ],
+    "existing_confidence": 0.374
+   },
+   "hit": true,
+   "alt_hit": false,
+   "elapsed_ms": 6194
+  },
+  {
+   "title": "Капсулен гардероб",
+   "expected": {
+    "new": "Мода"
+   },
+   "pick": {
+    "kind": "new",
+    "label": "Мода",
+    "description": "fashion",
+    "p": 0.723,
+    "confidence": 0.475,
+    "uncertain": true
+   },
+   "alternative": {
+    "kind": "existing",
+    "label": "Лични финанси",
+    "p": 0.143
+   },
+   "explain": {
+    "existing": [
+     {
+      "label": "__other__",
+      "p": 0.723
+     },
+     {
+      "label": "Лични финанси",
+      "p": 0.143
+     },
+     {
+      "label": "Готвене",
+      "p": 0.117
+     },
+     {
+      "label": "Програмиране",
+      "p": 0.009
+     },
+     {
+      "label": "Пътувания",
+      "p": 0.008
+     }
+    ],
+    "existing_confidence": 0.475
+   },
+   "hit": true,
+   "alt_hit": false,
+   "elapsed_ms": 5582
+  },
+  {
+   "title": "Тревожност и безсъние",
+   "expected": {
+    "new": "Психично здраве"
+   },
+   "pick": {
+    "kind": "new",
+    "label": "Здраве и благополучие",
+    "description": "health and wellness",
+    "p": 0.857,
+    "confidence": 0.625,
+    "uncertain": false
+   },
+   "alternative": {
+    "kind": "existing",
+    "label": "Лични финанси",
+    "p": 0.048
+   },
+   "explain": {
+    "existing": [
+     {
+      "label": "__other__",
+      "p": 0.857
+     },
+     {
+      "label": "Лични финанси",
+      "p": 0.048
+     },
+     {
+      "label": "Пътувания",
+      "p": 0.037
+     },
+     {
+      "label": "Програмиране",
+      "p": 0.035
+     },
+     {
+      "label": "Готвене",
+      "p": 0.022
+     }
+    ],
+    "existing_confidence": 0.625
+   },
+   "hit": true,
+   "alt_hit": false,
+   "elapsed_ms": 7566
+  },
+  {
+   "title": "Персеидите над Родопите",
+   "expected": {
+    "new": "Астрономия"
+   },
+   "pick": {
+    "kind": "existing",
+    "label": "Пътувания",
+    "p": 0.832,
+    "confidence": 0.63,
+    "uncertain": false
+   },
+   "alternative": {
+    "kind": "existing",
+    "label": "Готвене",
+    "p": 0.032
+   },
+   "explain": {
+    "existing": [
+     {
+      "label": "Пътувания",
+      "p": 0.832
+     },
+     {
+      "label": "__other__",
+      "p": 0.119
+     },
+     {
+      "label": "Готвене",
+      "p": 0.032
+     },
+     {
+      "label": "Програмиране",
+      "p": 0.011
+     },
+     {
+      "label": "Лични финанси",
+      "p": 0.006
+     }
+    ],
+    "existing_confidence": 0.63
+   },
+   "hit": false,
+   "alt_hit": false,
+   "elapsed_ms": 495
+  },
+  {
+   "title": "Шахматни дебюти за начинаещи",
+   "expected": {
+    "new": "Шах"
+   },
+   "pick": {
+    "kind": "existing",
+    "label": "Лични финанси",
+    "p": 0.692,
+    "confidence": 0.397,
+    "uncertain": true
+   },
+   "alternative": {
+    "kind": "existing",
+    "label": "Програмиране",
+    "p": 0.121
+   },
+   "explain": {
+    "existing": [
+     {
+      "label": "Лични финанси",
+      "p": 0.692
+     },
+     {
+      "label": "__other__",
+      "p": 0.133
+     },
+     {
+      "label": "Програмиране",
+      "p": 0.121
+     },
+     {
+      "label": "Готвене",
+      "p": 0.035
+     },
+     {
+      "label": "Пътувания",
+      "p": 0.019
+     }
+    ],
+    "existing_confidence": 0.397
+   },
+   "hit": false,
+   "alt_hit": false,
+   "elapsed_ms": 301
+  },
+  {
+   "title": "Първият ми плетен пуловер",
+   "expected": {
+    "new": "Плетене"
+   },
+   "pick": {
+    "kind": "new",
+    "label": "Креативност",
+    "description": "creativity",
+    "p": 0.924,
+    "confidence": 0.783,
+    "uncertain": false
+   },
+   "alternative": {
+    "kind": "existing",
+    "label": "Готвене",
+    "p": 0.046
+   },
+   "explain": {
+    "existing": [
+     {
+      "label": "__other__",
+      "p": 0.924
+     },
+     {
+      "label": "Готвене",
+      "p": 0.046
+     },
+     {
+      "label": "Лични финанси",
+      "p": 0.015
+     },
+     {
+      "label": "Пътувания",
+      "p": 0.009
+     },
+     {
+      "label": "Програмиране",
+      "p": 0.006
+     }
+    ],
+    "existing_confidence": 0.783
+   },
+   "hit": true,
+   "alt_hit": false,
+   "elapsed_ms": 6250
+  },
+  {
+   "title": "Птиците на Бургаските езера",
+   "expected": {
+    "new": "Природа"
+   },
+   "pick": {
+    "kind": "new",
+    "label": "Природа",
+    "description": "nature",
+    "p": 0.544,
+    "confidence": 0.36,
+    "uncertain": true
+   },
+   "alternative": {
+    "kind": "existing",
+    "label": "Пътувания",
+    "p": 0.354
+   },
+   "explain": {
+    "existing": [
+     {
+      "label": "__other__",
+      "p": 0.544
+     },
+     {
+      "label": "Пътувания",
+      "p": 0.354
+     },
+     {
+      "label": "Готвене",
+      "p": 0.056
+     },
+     {
+      "label": "Лични финанси",
+      "p": 0.031
+     },
+     {
+      "label": "Програмиране",
+      "p": 0.015
+     }
+    ],
+    "existing_confidence": 0.36
+   },
+   "hit": true,
+   "alt_hit": false,
+   "elapsed_ms": 5762
+  },
+  {
+   "title": "На работа с велосипед",
+   "expected": {
+    "new": "Колоездене"
+   },
+   "pick": {
+    "kind": "existing",
+    "label": "Пътувания",
+    "p": 0.825,
+    "confidence": 0.612,
+    "uncertain": false
+   },
+   "alternative": {
+    "kind": "existing",
+    "label": "Готвене",
+    "p": 0.029
+   },
+   "explain": {
+    "existing": [
+     {
+      "label": "Пътувания",
+      "p": 0.825
+     },
+     {
+      "label": "__other__",
+      "p": 0.115
+     },
+     {
+      "label": "Готвене",
+      "p": 0.029
+     },
+     {
+      "label": "Лични финанси",
+      "p": 0.029
+     },
+     {
+      "label": "Програмиране",
+      "p": 0.002
+     }
+    ],
+    "existing_confidence": 0.612
+   },
+   "hit": false,
+   "alt_hit": false,
+   "elapsed_ms": 383
+  },
+  {
+   "title": "Как научихме кучето да не дърпа каишката",
+   "expected": {
+    "new": "Домашни любимци"
+   },
+   "pick": {
+    "kind": "existing",
+    "label": "Пътувания",
+    "p": 0.367,
+    "confidence": 0.187,
+    "uncertain": true
+   },
+   "alternative": {
+    "kind": "existing",
+    "label": "Готвене",
+    "p": 0.234
+   },
+   "explain": {
+    "existing": [
+     {
+      "label": "Пътувания",
+      "p": 0.367
+     },
+     {
+      "label": "__other__",
+      "p": 0.329
+     },
+     {
+      "label": "Готвене",
+      "p": 0.234
+     },
+     {
+      "label": "Лични финанси",
+      "p": 0.04
+     },
+     {
+      "label": "Програмиране",
+      "p": 0.03
+     }
+    ],
+    "existing_confidence": 0.187
+   },
+   "hit": false,
+   "alt_hit": false,
+   "elapsed_ms": 199
+  },
+  {
+   "title": "Златото на траките",
+   "expected": {
+    "new": "История"
+   },
+   "pick": {
+    "kind": "new",
+    "label": "История",
+    "description": "history",
+    "p": 0.648,
+    "confidence": 0.433,
+    "uncertain": true
+   },
+   "alternative": {
+    "kind": "existing",
+    "label": "Пътувания",
+    "p": 0.243
+   },
+   "explain": {
+    "existing": [
+     {
+      "label": "__other__",
+      "p": 0.648
+     },
+     {
+      "label": "Пътувания",
+      "p": 0.243
+     },
+     {
+      "label": "Готвене",
+      "p": 0.097
+     },
+     {
+      "label": "Лични финанси",
+      "p": 0.007
+     },
+     {
+      "label": "Програмиране",
+      "p": 0.005
+     }
+    ],
+    "existing_confidence": 0.433
+   },
+   "hit": true,
+   "alt_hit": false,
+   "elapsed_ms": 5404
+  },
+  {
+   "title": "Baldur's Gate 3 след 100 часа",
+   "expected": {
+    "new": "Видео игри"
+   },
+   "pick": {
+    "kind": "existing",
+    "label": "Програмиране",
+    "p": 0.344,
+    "confidence": 0.184,
+    "uncertain": true
+   },
+   "alternative": {
+    "kind": "existing",
+    "label": "Пътувания",
+    "p": 0.279
+   },
+   "explain": {
+    "existing": [
+     {
+      "label": "Програмиране",
+      "p": 0.344
+     },
+     {
+      "label": "__other__",
+      "p": 0.307
+     },
+     {
+      "label": "Пътувания",
+      "p": 0.279
+     },
+     {
+      "label": "Готвене",
+      "p": 0.049
+     },
+     {
+      "label": "Лични финанси",
+      "p": 0.021
+     }
+    ],
+    "existing_confidence": 0.184
+   },
+   "hit": false,
+   "alt_hit": false,
+   "elapsed_ms": 351
+  },
+  {
+   "title": "Първият ми аквариум",
+   "expected": {
+    "new": "Аквариумистика"
+   },
+   "pick": {
+    "kind": "new",
+    "label": "Хобита",
+    "description": "hobbies",
+    "p": 0.867,
+    "confidence": 0.647,
+    "uncertain": false
+   },
+   "alternative": {
+    "kind": "existing",
+    "label": "Готвене",
+    "p": 0.043
+   },
+   "explain": {
+    "existing": [
+     {
+      "label": "__other__",
+      "p": 0.867
+     },
+     {
+      "label": "Готвене",
+      "p": 0.043
+     },
+     {
+      "label": "Лични финанси",
+      "p": 0.041
+     },
+     {
+      "label": "Пътувания",
+      "p": 0.032
+     },
+     {
+      "label": "Програмиране",
+      "p": 0.017
+     }
+    ],
+    "existing_confidence": 0.647
+   },
+   "hit": true,
+   "alt_hit": false,
+   "elapsed_ms": 6173
+  },
+  {
+   "title": "Левски - сезонът дотук",
+   "expected": {
+    "new": "Спорт"
+   },
+   "pick": {
+    "kind": "existing",
+    "label": "Готвене",
+    "p": 0.769,
+    "confidence": 0.587,
+    "uncertain": false
+   },
+   "alternative": {
+    "kind": "existing",
+    "label": "Пътувания",
+    "p": 0.019
+   },
+   "explain": {
+    "existing": [
+     {
+      "label": "Готвене",
+      "p": 0.769
+     },
+     {
+      "label": "__other__",
+      "p": 0.199
+     },
+     {
+      "label": "Пътувания",
+      "p": 0.019
+     },
+     {
+      "label": "Програмиране",
+      "p": 0.008
+     },
+     {
+      "label": "Лични финанси",
+      "p": 0.005
+     }
+    ],
+    "existing_confidence": 0.587
+   },
+   "hit": false,
+   "alt_hit": false,
+   "elapsed_ms": 247
+  },
+  {
+   "title": "Как се подготвих за изпита по немски B2",
+   "expected": {
+    "new": "Езици"
+   },
+   "pick": {
+    "kind": "existing",
+    "label": "Готвене",
+    "p": 0.991,
+    "confidence": 0.962,
+    "uncertain": false
+   },
+   "alternative": {
+    "kind": "existing",
+    "label": "Пътувания",
+    "p": 0.005
+   },
+   "explain": {
+    "existing": [
+     {
+      "label": "Готвене",
+      "p": 0.991
+     },
+     {
+      "label": "Пътувания",
+      "p": 0.005
+     },
+     {
+      "label": "__other__",
+      "p": 0.004
+     },
+     {
+      "label": "Лични финанси",
+      "p": 0.0
+     },
+     {
+      "label": "Програмиране",
+      "p": 0.0
+     }
+    ],
+    "existing_confidence": 0.962
+   },
+   "hit": false,
+   "alt_hit": false,
+   "elapsed_ms": 292
+  }
+ ]
+}

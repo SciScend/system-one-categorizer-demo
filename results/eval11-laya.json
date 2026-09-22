@@ -1,0 +1,511 @@
+{
+ "backend": "Laya multilingual (локално, CPU)",
+ "namer": "BgGPT-Gemma-3-4B-IT-GGUF (Ollama)",
+ "posts": "test_posts.json",
+ "right": 9,
+ "right_or_alt": 9,
+ "uncertain": 2,
+ "n": 11,
+ "results": [
+  {
+   "title": "Първата ми програма на Rust",
+   "expected": "Програмиране",
+   "pick": {
+    "kind": "existing",
+    "label": "Програмиране",
+    "p": 0.546,
+    "confidence": 0.346,
+    "uncertain": true
+   },
+   "alternative": {
+    "kind": "existing",
+    "label": "Готвене",
+    "p": 0.052
+   },
+   "explain": {
+    "existing": [
+     {
+      "label": "Програмиране",
+      "p": 0.546
+     },
+     {
+      "label": "__other__",
+      "p": 0.345
+     },
+     {
+      "label": "Готвене",
+      "p": 0.052
+     },
+     {
+      "label": "Пътувания",
+      "p": 0.03
+     },
+     {
+      "label": "Лични финанси",
+      "p": 0.026
+     }
+    ],
+    "existing_confidence": 0.346
+   },
+   "hit": true,
+   "alt_hit": false,
+   "elapsed_ms": 220
+  },
+  {
+   "title": "Домати на балкона",
+   "expected": {
+    "new": "Градинарство"
+   },
+   "pick": {
+    "kind": "existing",
+    "label": "Готвене",
+    "p": 0.943,
+    "confidence": 0.826,
+    "uncertain": false
+   },
+   "alternative": {
+    "kind": "existing",
+    "label": "Лични финанси",
+    "p": 0.01
+   },
+   "explain": {
+    "existing": [
+     {
+      "label": "Готвене",
+      "p": 0.943
+     },
+     {
+      "label": "__other__",
+      "p": 0.036
+     },
+     {
+      "label": "Лични финанси",
+      "p": 0.01
+     },
+     {
+      "label": "Програмиране",
+      "p": 0.007
+     },
+     {
+      "label": "Пътувания",
+      "p": 0.005
+     }
+    ],
+    "existing_confidence": 0.826
+   },
+   "hit": false,
+   "alt_hit": false,
+   "elapsed_ms": 171
+  },
+  {
+   "title": "Как избягах първия си маратон",
+   "expected": {
+    "new": "Здраве и фитнес"
+   },
+   "pick": {
+    "kind": "existing",
+    "label": "Пътувания",
+    "p": 0.816,
+    "confidence": 0.588,
+    "uncertain": false
+   },
+   "alternative": {
+    "kind": "existing",
+    "label": "Готвене",
+    "p": 0.078
+   },
+   "explain": {
+    "existing": [
+     {
+      "label": "Пътувания",
+      "p": 0.816
+     },
+     {
+      "label": "__other__",
+      "p": 0.087
+     },
+     {
+      "label": "Готвене",
+      "p": 0.078
+     },
+     {
+      "label": "Лични финанси",
+      "p": 0.014
+     },
+     {
+      "label": "Програмиране",
+      "p": 0.005
+     }
+    ],
+    "existing_confidence": 0.588
+   },
+   "hit": false,
+   "alt_hit": false,
+   "elapsed_ms": 159
+  },
+  {
+   "title": "Хляб с квас от нулата",
+   "expected": "Готвене",
+   "pick": {
+    "kind": "existing",
+    "label": "Готвене",
+    "p": 0.997,
+    "confidence": 0.987,
+    "uncertain": false
+   },
+   "alternative": {
+    "kind": "existing",
+    "label": "Лични финанси",
+    "p": 0.0
+   },
+   "explain": {
+    "existing": [
+     {
+      "label": "Готвене",
+      "p": 0.997
+     },
+     {
+      "label": "__other__",
+      "p": 0.002
+     },
+     {
+      "label": "Лични финанси",
+      "p": 0.0
+     },
+     {
+      "label": "Програмиране",
+      "p": 0.0
+     },
+     {
+      "label": "Пътувания",
+      "p": 0.0
+     }
+    ],
+    "existing_confidence": 0.987
+   },
+   "hit": true,
+   "alt_hit": false,
+   "elapsed_ms": 199
+  },
+  {
+   "title": "Ипотека или наем?",
+   "expected": "Лични финанси",
+   "pick": {
+    "kind": "existing",
+    "label": "Лични финанси",
+    "p": 0.999,
+    "confidence": 0.993,
+    "uncertain": false
+   },
+   "alternative": {
+    "kind": "existing",
+    "label": "Програмиране",
+    "p": 0.0
+   },
+   "explain": {
+    "existing": [
+     {
+      "label": "Лични финанси",
+      "p": 0.999
+     },
+     {
+      "label": "__other__",
+      "p": 0.001
+     },
+     {
+      "label": "Програмиране",
+      "p": 0.0
+     },
+     {
+      "label": "Пътувания",
+      "p": 0.0
+     },
+     {
+      "label": "Готвене",
+      "p": 0.0
+     }
+    ],
+    "existing_confidence": 0.993
+   },
+   "hit": true,
+   "alt_hit": false,
+   "elapsed_ms": 238
+  },
+  {
+   "title": "Сто години самота - препрочитане",
+   "expected": {
+    "new": "Книги"
+   },
+   "pick": {
+    "kind": "new",
+    "label": "Литература",
+    "description": "literature",
+    "p": 0.747,
+    "confidence": 0.463,
+    "uncertain": true
+   },
+   "alternative": {
+    "kind": "existing",
+    "label": "Лични финанси",
+    "p": 0.123
+   },
+   "explain": {
+    "existing": [
+     {
+      "label": "__other__",
+      "p": 0.747
+     },
+     {
+      "label": "Лични финанси",
+      "p": 0.123
+     },
+     {
+      "label": "Пътувания",
+      "p": 0.069
+     },
+     {
+      "label": "Готвене",
+      "p": 0.048
+     },
+     {
+      "label": "Програмиране",
+      "p": 0.014
+     }
+    ],
+    "existing_confidence": 0.463
+   },
+   "hit": true,
+   "alt_hit": false,
+   "elapsed_ms": 5949
+  },
+  {
+   "title": "Код с ChatGPT: помага ли наистина?",
+   "expected": "Програмиране",
+   "pick": {
+    "kind": "existing",
+    "label": "Програмиране",
+    "p": 0.998,
+    "confidence": 0.991,
+    "uncertain": false
+   },
+   "alternative": {
+    "kind": "existing",
+    "label": "Готвене",
+    "p": 0.001
+   },
+   "explain": {
+    "existing": [
+     {
+      "label": "Програмиране",
+      "p": 0.998
+     },
+     {
+      "label": "__other__",
+      "p": 0.001
+     },
+     {
+      "label": "Готвене",
+      "p": 0.001
+     },
+     {
+      "label": "Лични финанси",
+      "p": 0.0
+     },
+     {
+      "label": "Пътувания",
+      "p": 0.0
+     }
+    ],
+    "existing_confidence": 0.991
+   },
+   "hit": true,
+   "alt_hit": false,
+   "elapsed_ms": 288
+  },
+  {
+   "title": "Котката ни и ветеринарят",
+   "expected": {
+    "new": "Домашни любимци"
+   },
+   "pick": {
+    "kind": "new",
+    "label": "Животни",
+    "description": "animals",
+    "p": 0.795,
+    "confidence": 0.527,
+    "uncertain": false
+   },
+   "alternative": {
+    "kind": "existing",
+    "label": "Готвене",
+    "p": 0.083
+   },
+   "explain": {
+    "existing": [
+     {
+      "label": "__other__",
+      "p": 0.795
+     },
+     {
+      "label": "Готвене",
+      "p": 0.083
+     },
+     {
+      "label": "Лични финанси",
+      "p": 0.068
+     },
+     {
+      "label": "Пътувания",
+      "p": 0.039
+     },
+     {
+      "label": "Програмиране",
+      "p": 0.015
+     }
+    ],
+    "existing_confidence": 0.527
+   },
+   "hit": true,
+   "alt_hit": false,
+   "elapsed_ms": 5849
+  },
+  {
+   "title": "Уикенд в Истанбул",
+   "expected": "Пътувания",
+   "pick": {
+    "kind": "existing",
+    "label": "Пътувания",
+    "p": 0.992,
+    "confidence": 0.964,
+    "uncertain": false
+   },
+   "alternative": {
+    "kind": "existing",
+    "label": "Лични финанси",
+    "p": 0.002
+   },
+   "explain": {
+    "existing": [
+     {
+      "label": "Пътувания",
+      "p": 0.992
+     },
+     {
+      "label": "__other__",
+      "p": 0.005
+     },
+     {
+      "label": "Лични финанси",
+      "p": 0.002
+     },
+     {
+      "label": "Готвене",
+      "p": 0.001
+     },
+     {
+      "label": "Програмиране",
+      "p": 0.001
+     }
+    ],
+    "existing_confidence": 0.964
+   },
+   "hit": true,
+   "alt_hit": false,
+   "elapsed_ms": 485
+  },
+  {
+   "title": "Смяна на гумите преди зимата",
+   "expected": {
+    "new": "Автомобили"
+   },
+   "pick": {
+    "kind": "new",
+    "label": "Автомобили",
+    "description": "cars",
+    "p": 0.926,
+    "confidence": 0.798,
+    "uncertain": false
+   },
+   "alternative": {
+    "kind": "existing",
+    "label": "Лични финанси",
+    "p": 0.054
+   },
+   "explain": {
+    "existing": [
+     {
+      "label": "__other__",
+      "p": 0.926
+     },
+     {
+      "label": "Лични финанси",
+      "p": 0.054
+     },
+     {
+      "label": "Готвене",
+      "p": 0.014
+     },
+     {
+      "label": "Пътувания",
+      "p": 0.005
+     },
+     {
+      "label": "Програмиране",
+      "p": 0.002
+     }
+    ],
+    "existing_confidence": 0.798
+   },
+   "hit": true,
+   "alt_hit": false,
+   "elapsed_ms": 5907
+  },
+  {
+   "title": "Испански за една година",
+   "expected": {
+    "new": "Езици"
+   },
+   "pick": {
+    "kind": "new",
+    "label": "Езици",
+    "description": "languages",
+    "p": 0.974,
+    "confidence": 0.904,
+    "uncertain": false
+   },
+   "alternative": {
+    "kind": "existing",
+    "label": "Програмиране",
+    "p": 0.012
+   },
+   "explain": {
+    "existing": [
+     {
+      "label": "__other__",
+      "p": 0.974
+     },
+     {
+      "label": "Програмиране",
+      "p": 0.012
+     },
+     {
+      "label": "Готвене",
+      "p": 0.008
+     },
+     {
+      "label": "Лични финанси",
+      "p": 0.004
+     },
+     {
+      "label": "Пътувания",
+      "p": 0.003
+     }
+    ],
+    "existing_confidence": 0.904
+   },
+   "hit": true,
+   "alt_hit": false,
+   "elapsed_ms": 5756
+  }
+ ]
+}
