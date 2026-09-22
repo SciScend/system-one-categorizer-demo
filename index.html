@@ -1,0 +1,411 @@
+<!doctype html>
+<html lang="bg">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Блог с автоматични категории (демо)</title>
+<style>
+:root {
+  color-scheme: light;
+  --bg: #f7f6f3;
+  --surface: #ffffff;
+  --surface-2: #f0efec;
+  --border: #e3e1dc;
+  --ink: #1d1d1b;
+  --ink-2: #5c5b55;
+  --ink-3: #8a8980;
+  --accent: #2a78d6;
+  --accent-ink: #ffffff;
+  --bar: #2a78d6;
+  --bar-track: #ecebe7;
+  --warn: #fab219;
+  --warn-bg: #fff6e0;
+  --danger: #d03b3b;
+  --s1: #2a78d6; --s2: #eb6834; --s3: #1baf7a; --s4: #eda100;
+  --s5: #e87ba4; --s6: #008300; --s7: #4a3aa7; --s8: #e34948;
+  --s-other: #8a8980;
+  --radius: 12px;
+  --shadow: 0 1px 2px rgba(0,0,0,.04), 0 4px 16px rgba(0,0,0,.04);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --bg: #121211; --surface: #1a1a19; --surface-2: #232321; --border: #33332f;
+    --ink: #ffffff; --ink-2: #c3c2b7; --ink-3: #8f8e86;
+    --accent: #3987e5; --bar: #3987e5; --bar-track: #2b2b28;
+    --warn-bg: #3a2f12; --danger: #e66767;
+    --s1: #3987e5; --s2: #d95926; --s3: #199e70; --s4: #c98500;
+    --s5: #d55181; --s6: #008300; --s7: #9085e9; --s8: #e66767;
+    --shadow: none;
+  }
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0; background: var(--bg); color: var(--ink);
+  font: 15px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+.wrap { max-width: 1120px; margin: 0 auto; padding: 24px 16px 64px; }
+header { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-bottom: 20px; }
+h1 { font-size: 26px; line-height: 1.2; margin: 0; letter-spacing: -.01em; }
+.sub { color: var(--ink-2); margin: 4px 0 0; }
+.head-right { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.badge { font-size: 13px; color: var(--ink-2); background: var(--surface); border: 1px solid var(--border); border-radius: 999px; padding: 4px 12px; }
+.badge b { color: var(--ink); font-weight: 600; }
+.badge select { font: inherit; font-weight: 600; color: var(--ink); background: transparent; border: 0; padding: 0 2px; cursor: pointer; max-width: 260px; }
+.badge select:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
+.badge select option { background: var(--surface); color: var(--ink); }
+
+button { font: inherit; cursor: pointer; }
+.btn { border: 1px solid var(--border); background: var(--surface); color: var(--ink); border-radius: 8px; padding: 7px 14px; }
+.btn:hover { background: var(--surface-2); }
+.btn-primary { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); font-weight: 600; padding: 10px 18px; }
+.btn-primary:hover { background: var(--accent); filter: brightness(1.08); }
+.btn:disabled { opacity: .5; cursor: default; filter: none; }
+.btn-ghost { border-color: transparent; background: transparent; color: var(--ink-2); }
+
+/* Категории */
+.cats { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 24px; }
+.pill {
+  display: inline-flex; align-items: center; gap: 8px; border: 1px solid var(--border);
+  background: var(--surface); color: var(--ink); border-radius: 999px; padding: 6px 14px 6px 12px; font-size: 14px;
+}
+.pill .dot { width: 10px; height: 10px; border-radius: 50%; flex: none; }
+.pill .count { color: var(--ink-3); font-variant-numeric: tabular-nums; }
+button.pill:hover { border-color: var(--ink-3); }
+.pill[aria-pressed="true"] { border-color: var(--ink); box-shadow: inset 0 0 0 1px var(--ink); }
+.pill.new { border-style: dashed; }
+.pill.fresh { animation: pop .6s ease; }
+@keyframes pop { 0% { transform: scale(.9); } 60% { transform: scale(1.06); } 100% { transform: scale(1); } }
+
+.grid { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr); gap: 24px; align-items: start; }
+@media (max-width: 880px) { .grid { grid-template-columns: 1fr; } }
+
+.card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow); padding: 20px; }
+h2 { font-size: 13px; text-transform: uppercase; letter-spacing: .06em; color: var(--ink-3); margin: 0 0 12px; font-weight: 600; }
+
+/* Редактор */
+label.field { display: block; margin-bottom: 12px; }
+input[type=text], textarea {
+  width: 100%; font: inherit; color: var(--ink); background: var(--surface);
+  border: 1px solid var(--border); border-radius: 8px; padding: 10px 12px;
+}
+input[type=text]:focus, textarea:focus { outline: 2px solid var(--accent); outline-offset: -1px; border-color: transparent; }
+#title { font-size: 18px; font-weight: 600; }
+textarea { min-height: 150px; resize: vertical; }
+.row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.hint { color: var(--ink-3); font-size: 13px; }
+.examples { margin-top: 14px; display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.chip { border: 1px solid var(--border); background: var(--surface-2); color: var(--ink-2); border-radius: 6px; padding: 3px 9px; font-size: 13px; }
+.chip:hover { color: var(--ink); }
+
+/* Предложение */
+#suggestion { margin-top: 16px; }
+.sugg-empty { color: var(--ink-3); text-align: center; padding: 18px 8px; border: 1px dashed var(--border); border-radius: var(--radius); }
+.sugg-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap; }
+.kind { font-size: 12px; color: var(--ink-2); background: var(--surface-2); border-radius: 6px; padding: 2px 8px; }
+.pick { display: flex; align-items: center; gap: 12px; margin: 12px 0 14px; flex-wrap: wrap; }
+.pick .pill { font-size: 20px; font-weight: 600; padding: 10px 20px 10px 16px; }
+.pick .pill .dot { width: 14px; height: 14px; }
+.pick input { max-width: 260px; font-size: 18px; font-weight: 600; }
+.meter { display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--ink-2); }
+.meter .track { flex: 1; min-width: 120px; max-width: 220px; height: 8px; background: var(--bar-track); border-radius: 4px; overflow: hidden; }
+.meter .fill { height: 100%; background: var(--bar); border-radius: 0 4px 4px 0; }
+.warn { display: flex; gap: 8px; align-items: flex-start; background: var(--warn-bg); border-radius: 8px; padding: 8px 12px; margin-top: 12px; font-size: 14px; }
+.warn .icon { color: var(--warn); font-weight: 700; }
+.alts { margin: 16px 0; }
+.alts .label { font-size: 13px; color: var(--ink-3); margin-bottom: 6px; }
+.alts .list { display: flex; flex-wrap: wrap; gap: 6px; }
+.alts .pill { font-size: 13px; padding: 4px 12px 4px 10px; }
+.alts .pill small { color: var(--ink-3); font-variant-numeric: tabular-nums; }
+.custom { display: none; margin-top: 8px; gap: 8px; }
+.custom.open { display: flex; flex-wrap: wrap; }
+.custom input { flex: 1; min-width: 160px; }
+.error { color: var(--danger); margin-top: 8px; }
+
+details { margin-top: 16px; border-top: 1px solid var(--border); padding-top: 12px; }
+summary { cursor: pointer; color: var(--ink-2); font-size: 14px; }
+.explain { display: grid; max-width: 480px; margin-top: 12px; }
+.explain h3 { font-size: 13px; margin: 0 0 8px; font-weight: 600; }
+.explain h3 span { color: var(--ink-3); font-weight: 400; }
+.bar-row { display: grid; grid-template-columns: minmax(0, 1fr) 1.1fr 40px; gap: 8px; align-items: center; font-size: 13px; margin-bottom: 5px; }
+.bar-row .name { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--ink-2); }
+.bar-row .track { height: 8px; background: var(--bar-track); border-radius: 4px; overflow: hidden; }
+.bar-row .fill { height: 100%; background: var(--bar); border-radius: 0 4px 4px 0; }
+.bar-row .val { text-align: right; font-variant-numeric: tabular-nums; color: var(--ink-2); }
+.bar-row.win .name, .bar-row.win .val { color: var(--ink); font-weight: 600; }
+.meta { margin-top: 10px; font-size: 12px; color: var(--ink-3); }
+
+/* Постове */
+.posts-head { display: flex; justify-content: space-between; align-items: baseline; }
+.post { padding: 14px 0; border-top: 1px solid var(--border); }
+.post:first-of-type { border-top: 0; }
+.post h4 { margin: 6px 0 2px; font-size: 16px; }
+.post p { margin: 0; color: var(--ink-2); font-size: 14px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.post .pill { font-size: 12px; padding: 2px 10px 2px 8px; }
+.post .pill .dot { width: 8px; height: 8px; }
+.post .note { font-size: 12px; color: var(--ink-3); margin-left: 8px; }
+.post.fresh { animation: flash 1.6s ease; }
+@keyframes flash { 0% { background: var(--surface-2); } 100% { background: transparent; } }
+.empty { color: var(--ink-3); padding: 12px 0; }
+.spinner { display: inline-block; width: 14px; height: 14px; border: 2px solid var(--bar-track); border-top-color: var(--accent); border-radius: 50%; animation: spin .8s linear infinite; vertical-align: -2px; margin-right: 8px; }
+@keyframes spin { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) { * { animation: none !important; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div>
+      <h1>Блогът</h1>
+      <p class="sub">Пишеш пост, System One моделът предлага категория: съществуваща или нова.</p>
+    </div>
+    <div class="head-right">
+      <label class="badge">Модел: <select id="backend" title="Кой System One модел избира категорията"></select></label>
+      <button class="btn btn-ghost" id="reset" title="Връща блога към началните 8 поста и 4 категории">Нулирай</button>
+    </div>
+  </header>
+
+  <nav class="cats" id="cats" aria-label="Категории"></nav>
+
+  <div class="grid">
+    <section class="card" aria-labelledby="new-h">
+      <h2 id="new-h">Нов пост</h2>
+      <label class="field"><input type="text" id="title" placeholder="Заглавие" autocomplete="off"></label>
+      <label class="field"><textarea id="body" placeholder="Текст на поста..."></textarea></label>
+      <div class="row">
+        <button class="btn btn-primary" id="suggest">Предложи категория</button>
+        <span class="hint">Ctrl+Enter</span>
+      </div>
+      <div class="examples" id="examples"><span class="hint">Опитай с пример:</span></div>
+      <div id="suggestion"><div class="sugg-empty">Тук ще се появи предложението на модела.</div></div>
+    </section>
+
+    <section class="card" aria-labelledby="posts-h">
+      <div class="posts-head"><h2 id="posts-h">Постове</h2><span class="hint" id="filter-note"></span></div>
+      <div id="posts"></div>
+    </section>
+  </div>
+</div>
+
+<script>
+const $ = (sel) => document.querySelector(sel);
+const SLOTS = 8;  // осем цвята по фиксиран ред; девета и следващи категории са сиви, не нов цвят
+const BACKEND_KEY = "blog.backend";
+let state = null, filter = null, current = null, selected = null, freshPost = null, freshCat = null;
+
+function el(tag, attrs = {}, ...children) {
+  const node = document.createElement(tag);
+  for (const [k, v] of Object.entries(attrs)) {
+    if (k === "class") node.className = v;
+    else if (k.startsWith("on")) node.addEventListener(k.slice(2), v);
+    else if (v !== null && v !== undefined && v !== false) node.setAttribute(k, v);
+  }
+  for (const c of children.flat()) if (c !== null && c !== undefined) node.append(c);
+  return node;
+}
+const pct = (p) => Math.round(p * 100) + "%";
+
+function colorOf(name) {
+  const i = state.categories.findIndex((c) => c.name === name);
+  return i >= 0 && i < SLOTS ? `var(--s${i + 1})` : "var(--s-other)";
+}
+function pill(name, { tag = "span", count = null, isNew = false, extra = null, ...attrs } = {}) {
+  const dot = el("span", { class: "dot", style: isNew ? "border:2px dashed var(--ink-3)" : `background:${colorOf(name)}` });
+  return el(tag, { class: "pill" + (isNew ? " new" : ""), ...attrs },
+    dot, name, count !== null ? el("span", { class: "count" }, count) : null, extra);
+}
+
+async function api(path, body) {
+  const res = await fetch(path, body === undefined ? {} : {
+    method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body),
+  });
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.error || res.statusText);
+  return data;
+}
+
+// ---------- категории и постове
+function renderCats() {
+  const nav = $("#cats");
+  nav.replaceChildren(
+    el("button", { class: "pill", "aria-pressed": filter === null, onclick: () => { filter = null; render(); } },
+      "Всички", el("span", { class: "count" }, state.posts.length)),
+    ...state.categories.map((c) => {
+      const b = pill(c.name, { tag: "button", count: c.count, title: c.description,
+        "aria-pressed": filter === c.name, onclick: () => { filter = filter === c.name ? null : c.name; render(); } });
+      if (c.name === freshCat) b.classList.add("fresh");
+      return b;
+    }),
+  );
+}
+
+function renderPosts() {
+  const list = state.posts.filter((p) => !filter || p.category === filter);
+  $("#filter-note").textContent = filter ? `само '${filter}'` : "";
+  $("#posts").replaceChildren(...(list.length ? list.map((p) => {
+    let note = null;
+    if (p.suggested) note = el("span", { class: "note" },
+      p.suggested === p.category ? "✓ по предложение на модела" : `✎ поправено (моделът: ${p.suggested})`);
+    const node = el("article", { class: "post" },
+      el("div", {}, pill(p.category), note), el("h4", {}, p.title), p.body ? el("p", {}, p.body) : null);
+    if (p === freshPost) node.classList.add("fresh");
+    return node;
+  }) : [el("div", { class: "empty" }, "Няма постове в тази категория.")]));
+}
+
+function render() { renderCats(); renderPosts(); }
+
+// ---------- предложение
+function setSuggestion(...nodes) { $("#suggestion").replaceChildren(...nodes); }
+
+function select(choice) {
+  selected = choice;
+  renderSuggestion();
+}
+
+function bars(title, subtitle, rows, labelOf) {
+  const max = Math.max(...rows.map((r) => r.p), 0.0001);
+  return el("div", {},
+    el("h3", {}, title, " ", el("span", {}, subtitle)),
+    rows.map((r, i) => el("div", { class: "bar-row" + (i === 0 ? " win" : ""), title: `${labelOf(r.label)}: ${pct(r.p)}` },
+      el("span", { class: "name" }, labelOf(r.label)),
+      el("span", { class: "track" }, el("span", { class: "fill", style: `display:block;width:${(r.p / max) * 100}%` })),
+      el("span", { class: "val" }, pct(r.p)))));
+}
+
+function renderSuggestion() {
+  const r = current, pick = r.pick;
+  const isPick = selected.label === pick.label && selected.kind === pick.kind;
+  const exists = state.categories.some((c) => c.name === selected.label);
+
+  // голямото хапче: избраното в момента; новата категория може да се преименува
+  let big;
+  if (selected.kind === "new") {
+    const input = el("input", { type: "text", value: selected.label, "aria-label": "Име на новата категория",
+      oninput: (e) => { selected.label = e.target.value.trim(); publishBtn.textContent = publishLabel(); } });
+    big = el("div", { class: "pick" }, pill("", { isNew: true, extra: input }));
+  } else {
+    big = el("div", { class: "pick" }, pill(selected.label));
+  }
+
+  const head = el("div", { class: "sugg-head" },
+    el("h2", { style: "margin:0" }, isPick ? "Предложение на модела" : "Твоят избор"),
+    el("span", { class: "kind" }, selected.kind === "new" && !exists ? "+ нова категория" : "съществуваща категория"));
+
+  const meter = isPick ? el("div", { class: "meter" }, "Увереност",
+    el("span", { class: "track" }, el("span", { class: "fill", style: `display:block;width:${pick.confidence * 100}%` })),
+    el("b", {}, pct(pick.confidence))) : null;
+
+  const warn = isPick && pick.uncertain ? el("div", { class: "warn" }, el("span", { class: "icon", "aria-hidden": "true" }, "!"),
+    el("span", {}, el("b", {}, "Несигурно. "), "Моделът се колебае - погледни и другите възможности.")) : null;
+
+  // другите възможности: алтернативата на модела първа, после всички съществуващи
+  const options = [];
+  const push = (o) => { if (!options.some((x) => x.kind === o.kind && x.label === o.label)) options.push(o); };
+  if (pick.label) push({ kind: pick.kind, label: pick.label, description: pick.description, p: pick.p, tag: "модел" });
+  if (r.alternative) push({ ...r.alternative, tag: "2-ро" });
+  for (const c of state.categories) push({ kind: "existing", label: c.name });
+  const custom = el("div", { class: "custom" },
+    el("input", { type: "text", id: "custom-name", placeholder: "Име на категория" }),
+    el("input", { type: "text", id: "custom-desc", placeholder: "Описание на английски (по желание)" }),
+    el("button", { class: "btn", onclick: () => {
+      const name = $("#custom-name").value.trim();
+      if (name) select({ kind: "new", label: name, description: $("#custom-desc").value.trim() || name });
+    } }, "Избери"));
+  const alts = el("div", { class: "alts" },
+    el("div", { class: "label" }, "Или избери друга:"),
+    el("div", { class: "list" },
+      options.map((o) => pill(o.label, { tag: "button", isNew: o.kind === "new",
+        "aria-pressed": o.kind === selected.kind && o.label === selected.label,
+        onclick: () => select({ ...o }),
+        extra: o.p !== undefined ? el("small", {}, `${o.tag} | ${pct(o.p)}`) : null })),
+      el("button", { class: "pill new", onclick: () => custom.classList.toggle("open") }, "+ своя...")),
+    custom);
+
+  const publishLabel = () => selected.label ? `Публикувай в '${selected.label}'` : "Въведи име на категория";
+  const publishBtn = el("button", { class: "btn btn-primary", onclick: publish }, publishLabel());
+
+  const ex = r.explain;
+  const nice = (l) => (l === "__other__" ? "(друга тема)" : l);
+  const explain = el("details", {},
+    el("summary", {}, "Как реши моделът"),
+    el("div", { class: "explain" },
+      bars("Към коя съществуваща категория?", `увереност ${pct(ex.existing_confidence)}`, ex.existing, nice)),
+    el("div", { class: "meta" },
+      `${r.backend} | ${r.elapsed_ms} ms. Правило: ако моделът посочи категория, тя печели; ако каже 'друга тема' - ` +
+      (r.namer ? `${r.namer} измисля име на новата.` : "името на новата пишеш ти (няма Ollama или модела).")));
+
+  setSuggestion(el("div", { class: "card", style: "box-shadow:none;background:var(--surface-2);border:0" },
+    head, big, meter, warn, alts, el("div", { class: "row" }, publishBtn), el("div", { class: "error", id: "pub-error" }), explain));
+}
+
+async function suggest() {
+  const title = $("#title").value.trim(), body = $("#body").value.trim();
+  if (!title && !body) { $("#title").focus(); return; }
+  $("#suggest").disabled = true;
+  const backend = $("#backend").value;
+  const info = state.backends.find((b) => b.id === backend);
+  setSuggestion(el("div", { class: "sugg-empty" }, el("span", { class: "spinner" }),
+    info && !info.loaded ? `Зареждам ${info.name}... (първия път е по-бавно)` : "Моделът чете поста..."));
+  try {
+    current = await api("/api/suggest", { title, body, backend });
+    if (info) info.loaded = true;
+    select({ ...current.pick });
+  } catch (err) {
+    setSuggestion(el("div", { class: "sugg-empty error" }, err.message));
+  } finally {
+    $("#suggest").disabled = false;
+  }
+}
+
+async function publish() {
+  const title = $("#title").value.trim();
+  if (!title) { $("#pub-error").textContent = "Постът има нужда от заглавие."; $("#title").focus(); return; }
+  if (!selected.label) return;
+  const wasNew = !state.categories.some((c) => c.name === selected.label);
+  try {
+    state = await api("/api/posts", { title, body: $("#body").value.trim(), category: selected.label,
+      description: selected.description, suggested: current.pick.label });
+  } catch (err) { $("#pub-error").textContent = err.message; return; }
+  freshPost = state.posts[0];
+  freshCat = wasNew ? selected.label : null;
+  filter = null;
+  $("#title").value = ""; $("#body").value = "";
+  current = selected = null;
+  setSuggestion(el("div", { class: "sugg-empty" }, wasNew ? `Публикувано. Добавена е новата категория '${freshPost.category}'.` : `Публикувано в '${freshPost.category}'.`));
+  render();
+}
+
+function renderBackends() {
+  let saved = null;
+  try { saved = localStorage.getItem(BACKEND_KEY); } catch {}
+  const usable = (id) => state.backends.some((b) => b.id === id && !b.unavailable);
+  const value = usable(saved) ? saved : state.backend;
+  $("#backend").replaceChildren(...state.backends.map((b) => el("option", {
+    value: b.id, disabled: !!b.unavailable, selected: b.id === value,
+  }, b.unavailable ? `${b.name} - ${b.unavailable}` : b.name)));
+}
+
+async function init() {
+  state = await api("/api/state");
+  renderBackends();
+  const box = $("#examples");
+  state.examples.forEach((ex) => box.append(el("button", { class: "chip", title: ex.body,
+    onclick: () => { $("#title").value = ex.title; $("#body").value = ex.body; suggest(); } }, ex.title)));
+  render();
+}
+
+$("#suggest").addEventListener("click", suggest);
+$("#backend").addEventListener("change", (e) => {
+  try { localStorage.setItem(BACKEND_KEY, e.target.value); } catch {}
+  if (current) suggest();  // има предложение на екрана -> питай и новия модел
+});
+document.addEventListener("keydown", (e) => { if (e.key === "Enter" && (e.ctrlKey || e.metaKey)) suggest(); });
+$("#reset").addEventListener("click", async () => {
+  if (!confirm("Да върна блога към началните постове и категории?")) return;
+  state = await api("/api/reset", {}); filter = null; freshPost = freshCat = null; render();
+});
+init().catch((err) => setSuggestion(el("div", { class: "sugg-empty error" }, "Сървърът не отговаря: " + err.message)));
+</script>
+</body>
+</html>

@@ -1,0 +1,8 @@
+# състоянието на блога; създава се от seed.json при първо пускане
+data/
+# бележки от работата с AI асистент
+ai/
+__pycache__/
+.venv*/
+# ключове (TYPESAFE_API_KEY, AI_GATEWAY_API_KEY)
+.env
