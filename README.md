@@ -193,4 +193,4 @@ python evaluate.py --posts eval_posts.json --out results.json   # резулта
 
 Кодът е под [MIT](LICENSE). Моделите са под своите лицензи (виж [Модели](#модели)).
 
-Автор: Ива Попова, [SciScend](https://sciscend.com).
+Автор: Ива Попова, [SciScend](https://sciscend.com), Assisted by: Claude Opus/Sonnet
