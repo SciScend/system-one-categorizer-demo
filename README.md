@@ -72,7 +72,7 @@
 | Стъпка | Модел | Къде върви | Лиценз |
 |---|---|---|---|
 | 1 (по подразбиране) | [Laya multilingual](https://huggingface.co/convaiinnovations/laya-multilingual), пакет `laya` | локално, CPU | Apache 2.0 |
-| 1 (по желание) | Jev, през TypeSafe API или Vercel AI Gateway | облак, иска API ключ | платен API |
+| 1 (по желание) | Jev, през OpenRouter, Vercel AI Gateway или TypeSafe API | облак, иска API ключ | платен API |
 | 2 | [BgGPT 3.0 4B](https://huggingface.co/INSAIT-Institute/BgGPT-Gemma-3-4B-IT-GGUF) на INSAIT (Gemma 3, дообучен за български), Q4_K_M, 2,5 GB | локално, през [Ollama](https://ollama.com) | Gemma |
 
 Моделите не са в репото. Изтеглят се при инсталирането и важат техните лицензи.
@@ -103,10 +103,13 @@ ollama pull hf.co/INSAIT-Institute/BgGPT-Gemma-3-4B-IT-GGUF:Q4_K_M
 
 ```bash
 uv pip install typesafe-sdk==0.7.1
-echo 'AI_GATEWAY_API_KEY=vck_...' > .env   # ключ от Vercel AI Gateway
+echo 'OPENROUTER_API_KEY=sk-or-...' > .env   # ключ от OpenRouter
 ```
 
-Ключ `vck_...` праща заявките към `https://ai-gateway.vercel.sh/typesafe`.
+Ключ `sk-or-...` праща заявките към `https://openrouter.ai/api`.
+Може и през Vercel AI Gateway: `AI_GATEWAY_API_KEY=vck_...` праща заявките към
+`https://ai-gateway.vercel.sh/typesafe`. Ако са зададени и двата ключа, се
+ползва OpenRouter; за да минеш към Vercel, махни `OPENROUTER_API_KEY`.
 За директния API на TypeSafe задай `TYPESAFE_API_KEY` и `TYPESAFE_BASE_URL`.
 Променливите от средата имат предимство пред `.env`.
 
@@ -148,7 +151,7 @@ python evaluate.py --posts eval_posts.json --out results.json   # резулта
 - **Laya** (14): 10 нови теми, сложени в съществуваща категория, и 4 поста
   в грешна съществуваща категория.
 
-При натоварване Vercel AI Gateway връща 429, затова `JevBackend` повтаря
+При натоварване шлюзът (Vercel AI Gateway) връща 429, затова `JevBackend` повтаря
 заявката до 6 пъти. Jev използва около 500 входни токена на пост.
 
 ### Какво помогна при настройката

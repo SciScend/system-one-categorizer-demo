@@ -11,8 +11,8 @@
 
 Бекендове за стъпка 1 (еднакъв въпрос, еднакъв формат на отговора):
   laya - convaiinnovations/laya-multilingual локално на процесора (по подразбиране)
-  jev  - TypeSafe API чрез typesafe-sdk; нужен е TYPESAFE_API_KEY или AI_GATEWAY_API_KEY
-         (ключ vck_... от Vercel -> заявките отиват през Vercel AI Gateway)
+  jev  - TypeSafe API чрез typesafe-sdk; нужен е OPENROUTER_API_KEY, AI_GATEWAY_API_KEY
+         или TYPESAFE_API_KEY (ключ sk-or-... -> OpenRouter, ключ vck_... -> Vercel AI Gateway)
 И двата се избират от падащото меню в UI-то; вторият се зарежда при първа заявка.
 Стъпка 2 иска работещ Ollama с изтеглен NAMER_MODEL. Без него новата
 категория остава без име и потребителят я пише сам.
@@ -29,6 +29,7 @@ MIN_CONFIDENCE = 0.5         # под това предложението е о�
 LAYA_MODEL = "convaiinnovations/laya-multilingual"
 NAMER_MODEL = os.environ.get("NAMER_MODEL", "hf.co/INSAIT-Institute/BgGPT-Gemma-3-4B-IT-GGUF:Q4_K_M")
 OLLAMA_URL = os.environ.get("OLLAMA_HOST", "http://127.0.0.1:11434")
+OPENROUTER_URL = "https://openrouter.ai/api"            # Jev през OpenRouter
 GATEWAY_URL = "https://ai-gateway.vercel.sh/typesafe"  # Jev през Vercel AI Gateway
 
 
@@ -59,19 +60,25 @@ def build_questions(categories: dict[str, str]) -> dict:
 class JevBackend:
     @staticmethod
     def _key() -> str | None:
-        return os.environ.get("TYPESAFE_API_KEY") or os.environ.get("AI_GATEWAY_API_KEY")
+        """Ако има няколко ключа, OpenRouter е с предимство пред Vercel."""
+        return (os.environ.get("TYPESAFE_API_KEY") or os.environ.get("OPENROUTER_API_KEY")
+                or os.environ.get("AI_GATEWAY_API_KEY"))
 
     @classmethod
     def _base_url(cls) -> str | None:
-        """TYPESAFE_BASE_URL, ако е зададен; иначе ключ от Vercel (vck_...) -> AI Gateway."""
+        """TYPESAFE_BASE_URL, ако е зададен; иначе по ключа: sk-or-... -> OpenRouter, vck_... -> Vercel."""
         key = cls._key() or ""
-        return os.environ.get("TYPESAFE_BASE_URL") or (GATEWAY_URL if key.startswith("vck_") else None)
+        if os.environ.get("TYPESAFE_BASE_URL"):
+            return os.environ["TYPESAFE_BASE_URL"]
+        if key.startswith("sk-or-"):
+            return OPENROUTER_URL
+        return GATEWAY_URL if key.startswith("vck_") else None
 
     @classmethod
     def label(cls) -> str:
         url = cls._base_url() or ""
-        if url.startswith("http://127.0.0.1"):
-            return "MOCK сървър (не е Jev!)"
+        if "openrouter.ai" in url:
+            return "Jev (OpenRouter)"
         return "Jev (Vercel AI Gateway)" if "ai-gateway.vercel.sh" in url else "Jev (TypeSafe API)"
 
     @classmethod
@@ -80,7 +87,7 @@ class JevBackend:
         if importlib.util.find_spec("typesafe_sdk") is None:
             return "няма пакета typesafe-sdk"
         if not cls._key():
-            return "няма TYPESAFE_API_KEY или AI_GATEWAY_API_KEY"
+            return "няма OPENROUTER_API_KEY, AI_GATEWAY_API_KEY или TYPESAFE_API_KEY"
         return None
 
     def __init__(self):
