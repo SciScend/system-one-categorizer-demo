@@ -32,7 +32,7 @@ LAYA_MODEL = "convaiinnovations/laya-multilingual"
 NAMER_MODEL = os.environ.get("NAMER_MODEL", "hf.co/INSAIT-Institute/BgGPT-Gemma-3-4B-IT-GGUF:Q4_K_M")
 OLLAMA_URL = os.environ.get("OLLAMA_HOST", "http://127.0.0.1:11434")
 DO_URL = "https://inference.do-ai.run"                 # Jev през DigitalOcean Serverless Inference
-DO_MODEL = "typesafe-jev-latest"                        # името на Jev в DigitalOcean
+DO_MODEL = "typesafe-jev-1.13.0"                        # името на Jev в DigitalOcean (без псевдоним latest)
 OPENROUTER_URL = "https://openrouter.ai/api"            # Jev през OpenRouter
 GATEWAY_URL = "https://ai-gateway.vercel.sh/typesafe"  # Jev през Vercel AI Gateway
 
