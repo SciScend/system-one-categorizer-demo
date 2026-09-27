@@ -21,6 +21,7 @@
 import importlib.util
 import json
 import os
+import threading
 import time
 import urllib.request
 
@@ -159,8 +160,17 @@ class OllamaNamer:
     def __init__(self, model: str = NAMER_MODEL):
         self.model = model
         self.name = model.split("/")[-1].split(":")[0] + " (Ollama)"
-        # зарежда модела в паметта сега, а не при първия пост (~30 s)
-        _ollama("/api/generate", {"model": model, "keep_alive": "30m"})
+        # зарежда модела в паметта във фона (~30 s), за да не чака стартът
+        threading.Thread(target=self._warm_up, daemon=True).start()
+
+    def _warm_up(self) -> None:
+        started = time.monotonic()
+        try:
+            _ollama("/api/generate", {"model": self.model, "keep_alive": "30m"})
+        except OSError as error:
+            print(f"{self.name}: не се зареди ({error})", flush=True)
+            return
+        print(f"{self.name}: зареден ({time.monotonic() - started:.0f} s)", flush=True)
 
     @staticmethod
     def _prompt(title: str, body: str, categories: dict[str, str]) -> str:

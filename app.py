@@ -20,10 +20,11 @@ import json
 import shutil
 import sys
 import threading
+import time
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 
-from classifier import backend_options, load_env, make_backend, make_namer, suggest
+from classifier import BACKENDS, backend_options, load_env, make_backend, make_namer, suggest
 
 HERE = Path(__file__).resolve().parent
 SEED = HERE / "seed.json"
@@ -166,10 +167,15 @@ def main() -> None:
     parser.add_argument("--port", type=int, default=8770)
     args = parser.parse_args()
 
-    print("Зареждам модела...", flush=True)
     default_backend = args.backend
+    print(f"Зареждам {BACKENDS[args.backend].label()}...", flush=True)
+    started = time.monotonic()
     backend = get_backend(args.backend)
+    print(f"{backend.name}: зареден ({time.monotonic() - started:.0f} s)", flush=True)
+    print("Проверявам Ollama...", flush=True)
     namer = make_namer()
+    if namer:
+        print(f"Зареждам {namer.name} във фона...", flush=True)
     try:
         server = ThreadingHTTPServer(("127.0.0.1", args.port), Handler)
     except OSError:
