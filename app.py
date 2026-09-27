@@ -2,7 +2,7 @@
 """Блог с автоматични категории - уеб приложението.
 
     python app.py                  # Laya локално
-    python app.py --backend jev    # започва с Jev; иска OPENROUTER_API_KEY или AI_GATEWAY_API_KEY
+    python app.py --backend jev    # започва с Jev; иска DIGITALOCEAN_MODEL_ACCESS_KEY, OPENROUTER_API_KEY или AI_GATEWAY_API_KEY
     python app.py --port 8771
 После отвори http://127.0.0.1:8770
 

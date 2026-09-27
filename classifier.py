@@ -11,8 +11,9 @@
 
 Бекендове за стъпка 1 (еднакъв въпрос, еднакъв формат на отговора):
   laya - convaiinnovations/laya-multilingual локално на процесора (по подразбиране)
-  jev  - TypeSafe API чрез typesafe-sdk; нужен е OPENROUTER_API_KEY, AI_GATEWAY_API_KEY
-         или TYPESAFE_API_KEY (ключ sk-or-... -> OpenRouter, ключ vck_... -> Vercel AI Gateway)
+  jev  - TypeSafe API чрез typesafe-sdk; нужен е поне един от DIGITALOCEAN_MODEL_ACCESS_KEY (DigitalOcean),
+         OPENROUTER_API_KEY (OpenRouter), AI_GATEWAY_API_KEY (Vercel AI Gateway) или TYPESAFE_API_KEY.
+         При няколко ключа се опитват по реда им в .env; ако един откаже, минава към следващия.
 И двата се избират от падащото меню в UI-то; вторият се зарежда при първа заявка.
 Стъпка 2 иска работещ Ollama с изтеглен NAMER_MODEL. Без него новата
 категория остава без име и потребителят я пише сам.
@@ -30,8 +31,13 @@ MIN_CONFIDENCE = 0.5         # под това предложението е о�
 LAYA_MODEL = "convaiinnovations/laya-multilingual"
 NAMER_MODEL = os.environ.get("NAMER_MODEL", "hf.co/INSAIT-Institute/BgGPT-Gemma-3-4B-IT-GGUF:Q4_K_M")
 OLLAMA_URL = os.environ.get("OLLAMA_HOST", "http://127.0.0.1:11434")
+DO_URL = "https://inference.do-ai.run"                 # Jev през DigitalOcean Serverless Inference
+DO_MODEL = "typesafe-jev-latest"                        # името на Jev в DigitalOcean
 OPENROUTER_URL = "https://openrouter.ai/api"            # Jev през OpenRouter
 GATEWAY_URL = "https://ai-gateway.vercel.sh/typesafe"  # Jev през Vercel AI Gateway
+
+
+ENV_ORDER: list[str] = []  # ключовете от .env по реда им; по него се избира маршрутът за Jev
 
 
 def load_env(path) -> None:
@@ -45,6 +51,7 @@ def load_env(path) -> None:
         value = value.strip().strip("'\"")
         if sep and not key.lstrip().startswith("#") and value and "${" not in value:
             os.environ.setdefault(key.strip(), value)
+            ENV_ORDER.append(key.strip())
 
 
 def build_questions(categories: dict[str, str]) -> dict:
@@ -59,50 +66,62 @@ def build_questions(categories: dict[str, str]) -> dict:
 
 
 class JevBackend:
-    @staticmethod
-    def _key() -> str | None:
-        """Ако има няколко ключа, OpenRouter е с предимство пред Vercel."""
-        return (os.environ.get("TYPESAFE_API_KEY") or os.environ.get("OPENROUTER_API_KEY")
-                or os.environ.get("AI_GATEWAY_API_KEY"))
+    """Jev през всеки маршрут, за който има ключ. Ред: както са ключовете в .env;
+    ако първият маршрут откаже, заявката минава през следващия."""
+    ROUTES = {  # променлива с ключа -> (адрес, име в UI-то, модел)
+        "DIGITALOCEAN_MODEL_ACCESS_KEY": (DO_URL, "DigitalOcean", DO_MODEL),
+        "OPENROUTER_API_KEY": (OPENROUTER_URL, "OpenRouter", None),
+        "AI_GATEWAY_API_KEY": (GATEWAY_URL, "Vercel AI Gateway", None),
+        "TYPESAFE_API_KEY": (None, "TypeSafe API", None),  # адрес от TYPESAFE_BASE_URL или SDK-то
+    }
 
     @classmethod
-    def _base_url(cls) -> str | None:
-        """TYPESAFE_BASE_URL, ако е зададен; иначе по ключа: sk-or-... -> OpenRouter, vck_... -> Vercel."""
-        key = cls._key() or ""
-        if os.environ.get("TYPESAFE_BASE_URL"):
-            return os.environ["TYPESAFE_BASE_URL"]
-        if key.startswith("sk-or-"):
-            return OPENROUTER_URL
-        return GATEWAY_URL if key.startswith("vck_") else None
+    def _routes(cls) -> list[str]:
+        """Променливите със зададен ключ: първо по реда в .env, после останалите по реда в ROUTES."""
+        present = [var for var in cls.ROUTES if os.environ.get(var)]
+        return sorted(present, key=lambda var: ENV_ORDER.index(var) if var in ENV_ORDER else len(ENV_ORDER))
 
     @classmethod
     def label(cls) -> str:
-        url = cls._base_url() or ""
-        if "openrouter.ai" in url:
-            return "Jev (OpenRouter)"
-        return "Jev (Vercel AI Gateway)" if "ai-gateway.vercel.sh" in url else "Jev (TypeSafe API)"
+        names = [cls.ROUTES[var][1] for var in cls._routes()]
+        return f"Jev ({' -> '.join(names)})" if names else "Jev"
 
     @classmethod
     def unavailable(cls) -> str | None:
         """Защо бекендът не може да се ползва; None, ако може."""
         if importlib.util.find_spec("typesafe_sdk") is None:
             return "няма пакета typesafe-sdk"
-        if not cls._key():
-            return "няма OPENROUTER_API_KEY, AI_GATEWAY_API_KEY или TYPESAFE_API_KEY"
+        if not cls._routes():
+            return "няма " + ", ".join(cls.ROUTES)
         return None
 
     def __init__(self):
         from typesafe_sdk import RetryPolicy, TypeSafeClient  # само ако се ползва този бекенд
         self.name = self.label()
-        # при натоварване шлюзът връща 429 за десетки секунди; две повторения (по подразбиране) не стигат
-        self.client = TypeSafeClient(api_key=self._key(), base_url=self._base_url(),
-                                     retry=RetryPolicy(max_retries=6, backoff_max=20.0, timeout=120.0))
+        self.clients = []  # (име, клиент) по реда на опитване
+        routes = self._routes()
+        for i, var in enumerate(routes):
+            url, route_name, model = self.ROUTES[var]
+            # при натоварване шлюзът връща 429 за десетки секунди; две повторения (по подразбиране)
+            # не стигат, освен ако има следващ маршрут - тогава е по-бързо да минем към него
+            retries = 6 if i == len(routes) - 1 else 2
+            client = TypeSafeClient(api_key=os.environ[var], base_url=url,
+                                    model=os.environ.get("TYPESAFE_DEFAULT_MODEL") or model,
+                                    retry=RetryPolicy(max_retries=retries, backoff_max=20.0, timeout=120.0))
+            self.clients.append((route_name, client))
 
     def ask(self, state: dict, questions: dict) -> dict:
-        from typesafe_sdk import Choice
+        from typesafe_sdk import Choice, TypeSafeError
         typed = {qid: Choice(instructions=q["instructions"], criteria=q["criteria"])
                  for qid, q in questions.items()}
-        response = self.client.system_one(state=state, questions=typed)
+        for i, (route_name, client) in enumerate(self.clients):
+            try:
+                response = client.system_one(state=state, questions=typed)
+                break
+            except TypeSafeError as error:
+                if i == len(self.clients) - 1:
+                    raise
+                print(f"Jev през {route_name} не отговори ({error}); опитвам {self.clients[i + 1][0]}", flush=True)
         return {qid: {"choice": a.choice, "confidence": a.confidence, "probabilities": dict(a.probabilities)}
                 for qid, a in response.choices.items()}
 
