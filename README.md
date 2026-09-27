@@ -109,16 +109,23 @@ echo 'DIGITALOCEAN_MODEL_ACCESS_KEY=...' > .env   # model access key от Digita
 `DIGITALOCEAN_MODEL_ACCESS_KEY` праща заявките към DigitalOcean Serverless
 Inference (`https://inference.do-ai.run`) с модел `typesafe-jev-1.13.0`. Ключът
 се създава в DigitalOcean Cloud Console -> Serverless Inference -> Model Access Keys.
+
 Може и през OpenRouter: `OPENROUTER_API_KEY=sk-or-...` праща заявките към
-`https://openrouter.ai/api`. Може и през Vercel AI Gateway:
+`https://openrouter.ai/api`. 
+
+Както и през Vercel AI Gateway:
 `AI_GATEWAY_API_KEY=vck_...` праща заявките към `https://ai-gateway.vercel.sh/typesafe`.
+
 Ако са зададени няколко ключа, се опитват по реда им в `.env`: първо този на
 най-горния ред, а ако той откаже (грешен ключ, 429, няма връзка), същата заявка
 минава през следващия. Ключ, който е само в средата, а не в `.env`, е след тези
 от `.env`. Дропдаунът показва реда, напр. `Jev (DigitalOcean -> OpenRouter)`.
+
 Друга версия на Jev се задава с `TYPESAFE_DEFAULT_MODEL` (напр. по-нова от `typesafe-jev-1.13.0`).
+
 За директния API на TypeSafe задай `TYPESAFE_API_KEY` и по желание `TYPESAFE_BASE_URL`
 (той важи само за този ключ).
+
 Променливите от средата имат предимство пред `.env`.
 
 ## Пускане
