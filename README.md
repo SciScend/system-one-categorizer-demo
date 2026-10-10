@@ -71,8 +71,8 @@
 
 | Стъпка | Модел | Къде върви | Лиценз |
 |---|---|---|---|
-| 1 (по подразбиране) | [Laya multilingual](https://huggingface.co/convaiinnovations/laya-multilingual), пакет `laya` | локално, CPU | Apache 2.0 |
-| 1 (по желание) | Jev, през TypeSafe API (или DigitalOcean, OpenRouter, Vercel AI Gateway) | облак, иска API ключ | платен API |
+| 1 (без ключ за Jev) | [Laya multilingual](https://huggingface.co/convaiinnovations/laya-multilingual), пакет `laya` | локално, CPU | Apache 2.0 |
+| 1 (по подразбиране, ако има ключ) | Jev, през TypeSafe API (или DigitalOcean, OpenRouter, Vercel AI Gateway) | облак, иска API ключ | платен API |
 | 2 | [BgGPT 3.0 4B](https://huggingface.co/INSAIT-Institute/BgGPT-Gemma-3-4B-IT-GGUF) на INSAIT (Gemma 3, дообучен за български), Q4_K_M, 2,5 GB | локално, през [Ollama](https://ollama.com) | Gemma |
 
 Моделите не са в репото. Изтеглят се при инсталирането и важат техните лицензи.
@@ -136,15 +136,16 @@ Serverless Inference -> Model Access Keys.
 ## Пускане
 
 ```bash
-python app.py                  # http://127.0.0.1:8770, Laya по подразбиране
-python app.py --backend jev    # Jev по подразбиране
+python app.py                  # http://127.0.0.1:8770, Jev по подразбиране (без ключ за Jev: Laya)
+python app.py --backend laya   # Laya по подразбиране
 python app.py --port 8771      # ако портът е зает
 ```
 
 Моделът се сменя от менюто "Модел" горе вдясно; изборът се помни в браузъра.
-Моделът по подразбиране се зарежда при старта (Laya: 15-45 s; при първото
-пускане се изтегля от Hugging Face), другият при първата заявка към него.
-BgGPT се зарежда за ~30 s.
+Интерфейсът е готов веднага след старта, а моделите се зареждат във фона,
+първо този по подразбиране: Jev веднага, Laya за 15-45 s (при първото пускане
+се изтегля от Hugging Face). Заявка към Laya преди това изчаква, докато се
+зареди. BgGPT се зарежда за ~30 s.
 
 Състоянието на блога е в `data/blog.json`. Бутонът "Нулирай" го връща към
 `seed.json` (4 категории, 8 поста).

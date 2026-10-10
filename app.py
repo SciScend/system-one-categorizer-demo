@@ -1,14 +1,15 @@
 #!/usr/bin/env python3
 """Блог с автоматични категории - уеб приложението.
 
-    python app.py                  # Laya локално
-    python app.py --backend jev    # започва с Jev; иска TYPESAFE_API_KEY (или ключ за DigitalOcean, OpenRouter, Vercel)
+    python app.py                  # започва с Jev, ако има ключ (TYPESAFE_API_KEY или ключ за посредник); иначе с Laya
+    python app.py --backend laya   # започва с Laya локално
     python app.py --port 8771
 После отвори http://127.0.0.1:8770
 
-Моделът за стъпка 1 (Laya или Jev) се сменя от падащото меню в UI-то;
---backend избира кой е по подразбиране и се зарежда при старта. Ключовете
-могат да са и в .env до app.py.
+Моделът за стъпка 1 (Jev или Laya) се сменя от падащото меню в UI-то;
+--backend избира кой е по подразбиране. Сървърът тръгва веднага, а моделите
+се зареждат във фона, първо този по подразбиране. Ключовете могат да са и в
+.env до app.py.
 
 Само стандартната библиотека + бекенда (laya или typesafe-sdk). Имената на нови
 категории идват от локален LLM през Ollama (HTTP). Състоянието на
@@ -31,9 +32,10 @@ SEED = HERE / "seed.json"
 DATA = HERE / "data" / "blog.json"
 MAX_TEXT = 20_000  # символа; System One моделите четат текст, не романи
 
-lock = threading.Lock()  # един модел, една заявка наведнъж; пази и файла
-backends = {}  # id -> зареден бекенд; вторият се зарежда при първа заявка към него
-default_backend = "laya"
+lock = threading.Lock()  # една заявка към модел наведнъж; пази и файла
+backends = {}  # id -> зареден бекенд; зареждат се във фона след старта
+loading = {kind: threading.Lock() for kind in BACKENDS}  # всеки бекенд се зарежда само веднъж
+default_backend = "jev"
 namer = None  # локален LLM за имена на нови категории; None без Ollama
 
 
@@ -57,15 +59,28 @@ def save_blog(blog: dict) -> None:
 
 
 def get_backend(kind: str):
-    """Зареден бекенд по id; зарежда го при нужда. Викай под lock."""
-    if kind not in backends:
-        options = {o["id"]: o for o in backend_options()}
-        if kind not in options:
-            raise ValueError(f"Няма такъв модел: {kind}")
-        if options[kind]["unavailable"]:
-            raise ValueError(f"{options[kind]['name']}: {options[kind]['unavailable']}")
-        backends[kind] = make_backend(kind)
+    """Зареден бекенд по id; зарежда го при нужда, а ако вече се зарежда във фона, изчаква."""
+    if kind not in BACKENDS:
+        raise ValueError(f"Няма такъв модел: {kind}")
+    with loading[kind]:
+        if kind not in backends:
+            reason = BACKENDS[kind].unavailable()
+            if reason:
+                raise ValueError(f"{BACKENDS[kind].label()}: {reason}")
+            backends[kind] = make_backend(kind)
     return backends[kind]
+
+
+def load_backends(kinds: list[str]) -> None:
+    """Зарежда бекендовете един след друг във фона, за да не чака стартът (Laya: 15-45 s)."""
+    for kind in kinds:
+        started = time.monotonic()
+        try:
+            backend = get_backend(kind)
+        except Exception as error:  # заявка към него ще опита пак и ще покаже грешката в UI-то
+            print(f"{BACKENDS[kind].label()}: не се зареди ({error})", flush=True)
+            continue
+        print(f"{backend.name}: зареден ({time.monotonic() - started:.0f} s)", flush=True)
 
 
 def public_state(blog: dict) -> dict:
@@ -119,14 +134,14 @@ class Handler(BaseHTTPRequestHandler):
             if not (title or text):
                 self._send(400, {"error": "Напиши заглавие или текст"})
                 return
-            with lock:
-                blog = load_blog()
-                try:
-                    backend = get_backend(str(body.get("backend") or default_backend))
-                    result = suggest(backend, namer, title, text, blog["categories"])
-                except Exception as error:  # мрежа, ключ, лимит - показваме го в UI-то
-                    self._send(502, {"error": f"Моделът не отговори: {error}"})
-                    return
+            try:
+                # извън lock: докато Laya се зарежда, заявките към Jev не чакат
+                backend = get_backend(str(body.get("backend") or default_backend))
+                with lock:
+                    result = suggest(backend, namer, title, text, load_blog()["categories"])
+            except Exception as error:  # мрежа, ключ, лимит - показваме го в UI-то
+                self._send(502, {"error": f"Моделът не отговори: {error}"})
+                return
             self._send(200, result)
 
         elif self.path == "/api/posts":
@@ -163,15 +178,14 @@ def main() -> None:
     global default_backend, namer
     load_env(HERE / ".env")
     parser = argparse.ArgumentParser(description="Блог с автоматични категории")
-    parser.add_argument("--backend", choices=["laya", "jev"], default="laya")
+    parser.add_argument("--backend", choices=list(BACKENDS), help="по подразбиране jev, ако има ключ; иначе laya")
     parser.add_argument("--port", type=int, default=8770)
     args = parser.parse_args()
 
-    default_backend = args.backend
-    print(f"Зареждам {BACKENDS[args.backend].label()}...", flush=True)
-    started = time.monotonic()
-    backend = get_backend(args.backend)
-    print(f"{backend.name}: зареден ({time.monotonic() - started:.0f} s)", flush=True)
+    options = {o["id"]: o for o in backend_options()}
+    default_backend = args.backend or ("jev" if not options["jev"]["unavailable"] else "laya")
+    if options[default_backend]["unavailable"]:
+        sys.exit(f"{options[default_backend]['name']}: {options[default_backend]['unavailable']}")
     print("Проверявам Ollama...", flush=True)
     namer = make_namer()
     if namer:
@@ -180,8 +194,10 @@ def main() -> None:
         server = ThreadingHTTPServer(("127.0.0.1", args.port), Handler)
     except OSError:
         sys.exit(f"Порт {args.port} е зает. Пусни с --port {args.port + 1}")
-    others = [f"{o['name']} ({o['unavailable'] or 'при първа заявка'})" for o in backend_options() if o["id"] != args.backend]
-    print(f"Бекенд: {backend.name}; в менюто още: {', '.join(others)}\nНови категории: {namer.name if namer else 'ръчно (няма Ollama или модела)'}\nОтвори http://127.0.0.1:{args.port}  (Ctrl+C за спиране)", flush=True)
+    others = [f"{o['name']} ({o['unavailable'] or 'зарежда се във фона'})" for kind, o in options.items() if kind != default_backend]
+    print(f"Бекенд: {options[default_backend]['name']}; в менюто още: {', '.join(others)}\nНови категории: {namer.name if namer else 'ръчно (няма Ollama или модела)'}\nОтвори http://127.0.0.1:{args.port}  (Ctrl+C за спиране)", flush=True)
+    usable = sorted((kind for kind, o in options.items() if not o["unavailable"]), key=lambda kind: kind != default_backend)
+    threading.Thread(target=load_backends, args=(usable,), daemon=True).start()  # първо този по подразбиране
     server.serve_forever()
 
 

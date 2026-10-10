@@ -10,12 +10,12 @@
 Увереността (confidence) под MIN_CONFIDENCE значи "провери ме".
 
 Бекендове за стъпка 1 (еднакъв въпрос, еднакъв формат на отговора):
-  laya - convaiinnovations/laya-multilingual локално на процесора (по подразбиране)
+  laya - convaiinnovations/laya-multilingual локално на процесора (по подразбиране, ако няма ключ за Jev)
   jev  - TypeSafe API чрез typesafe-sdk; нужен е TYPESAFE_API_KEY (директно към TypeSafe, основният начин)
          или ключ за посредник: DIGITALOCEAN_MODEL_ACCESS_KEY (DigitalOcean), OPENROUTER_API_KEY (OpenRouter),
          AI_GATEWAY_API_KEY (Vercel AI Gateway).
          При няколко ключа се опитват по реда им в .env; ако един откаже, минава към следващия.
-И двата се избират от падащото меню в UI-то; вторият се зарежда при първа заявка.
+И двата се избират от падащото меню в UI-то; app.py ги зарежда във фона след старта.
 Стъпка 2 иска работещ Ollama с изтеглен NAMER_MODEL. Без него новата
 категория остава без име и потребителят я пише сам.
 """
