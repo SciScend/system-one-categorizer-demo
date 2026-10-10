@@ -84,8 +84,15 @@ class JevBackend:
 
     @classmethod
     def label(cls) -> str:
-        names = [cls.ROUTES[var][1] for var in cls._routes()]
-        return f"Jev ({' -> '.join(names)})" if names else "Jev"
+        """За менюто: само първият маршрут; резервните се виждат в конзолата, ако се стигне до тях."""
+        routes = cls._routes()
+        return f"Jev ({cls.ROUTES[routes[0]][1]})" if routes else "Jev"
+
+    @staticmethod
+    def model_label(model: str) -> str:
+        """Името от отговора за UI-то: typesafe-jev-1.13.0 или jev-1.13.0 -> Jev 1.13.0."""
+        name = model.rsplit("/", 1)[-1].removeprefix("typesafe-")
+        return "Jev " + name[4:] if name.startswith("jev-") else name
 
     @classmethod
     def unavailable(cls) -> str | None:
@@ -99,6 +106,7 @@ class JevBackend:
     def __init__(self):
         from typesafe_sdk import RetryPolicy, TypeSafeClient  # само ако се ползва този бекенд
         self.name = self.label()
+        self.model = "Jev"  # модел и версия от последния отговор
         self.clients = []  # (име, клиент) по реда на опитване
         routes = self._routes()
         for i, var in enumerate(routes):
@@ -123,12 +131,14 @@ class JevBackend:
                 if i == len(self.clients) - 1:
                     raise
                 print(f"Jev през {route_name} не отговори ({error}); опитвам {self.clients[i + 1][0]}", flush=True)
+        self.model = self.model_label(response.model)
         return {qid: {"choice": a.choice, "confidence": a.confidence, "probabilities": dict(a.probabilities)}
                 for qid, a in response.choices.items()}
 
 
 class LayaBackend:
-    name = "Laya multilingual (локално, CPU)"
+    model = "Laya multilingual"
+    name = f"{model} (локално, CPU)"
 
     @classmethod
     def label(cls) -> str:
@@ -264,7 +274,7 @@ def suggest(backend, namer, title: str, body: str, categories: dict[str, str]) -
             "existing": _ranked(existing["probabilities"]),
             "existing_confidence": round(existing["confidence"], 3),
         },
-        "backend": backend.name,
+        "model": backend.model,
         "namer": namer.name if namer else None,
         "elapsed_ms": elapsed_ms,
     }
