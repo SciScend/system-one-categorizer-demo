@@ -72,7 +72,7 @@
 | Стъпка | Модел | Къде върви | Лиценз |
 |---|---|---|---|
 | 1 (по подразбиране) | [Laya multilingual](https://huggingface.co/convaiinnovations/laya-multilingual), пакет `laya` | локално, CPU | Apache 2.0 |
-| 1 (по желание) | Jev, през DigitalOcean, OpenRouter, Vercel AI Gateway или TypeSafe API | облак, иска API ключ | платен API |
+| 1 (по желание) | Jev, през TypeSafe API (или DigitalOcean, OpenRouter, Vercel AI Gateway) | облак, иска API ключ | платен API |
 | 2 | [BgGPT 3.0 4B](https://huggingface.co/INSAIT-Institute/BgGPT-Gemma-3-4B-IT-GGUF) на INSAIT (Gemma 3, дообучен за български), Q4_K_M, 2,5 GB | локално, през [Ollama](https://ollama.com) | Gemma |
 
 Моделите не са в репото. Изтеглят се при инсталирането и важат техните лицензи.
@@ -103,12 +103,17 @@ ollama pull hf.co/INSAIT-Institute/BgGPT-Gemma-3-4B-IT-GGUF:Q4_K_M
 
 ```bash
 uv pip install typesafe-sdk==0.7.1
-echo 'DIGITALOCEAN_MODEL_ACCESS_KEY=...' > .env   # model access key от DigitalOcean
+echo 'TYPESAFE_API_KEY=...' > .env   # API ключ от TypeSafe
 ```
 
-`DIGITALOCEAN_MODEL_ACCESS_KEY` праща заявките към DigitalOcean Serverless
-Inference (`https://inference.do-ai.run`) с модел `typesafe-jev-1.13.0`. Ключът
-се създава в DigitalOcean Cloud Console -> Serverless Inference -> Model Access Keys.
+`TYPESAFE_API_KEY` праща заявките директно към API-то на TypeSafe
+(`https://api.typesafe.ai`) с модел `jev-latest`. Друг адрес се задава с
+`TYPESAFE_BASE_URL` (той важи само за този ключ).
+
+Може и през DigitalOcean: `DIGITALOCEAN_MODEL_ACCESS_KEY` праща заявките към
+DigitalOcean Serverless Inference (`https://inference.do-ai.run`) с модел
+`typesafe-jev-1.13.0`. Ключът се създава в DigitalOcean Cloud Console ->
+Serverless Inference -> Model Access Keys.
 
 Може и през OpenRouter: `OPENROUTER_API_KEY=sk-or-...` праща заявките към
 `https://openrouter.ai/api`. 
@@ -119,12 +124,11 @@ Inference (`https://inference.do-ai.run`) с модел `typesafe-jev-1.13.0`. �
 Ако са зададени няколко ключа, се опитват по реда им в `.env`: първо този на
 най-горния ред, а ако той откаже (грешен ключ, 429, няма връзка), същата заявка
 минава през следващия. Ключ, който е само в средата, а не в `.env`, е след тези
-от `.env`. Дропдаунът показва реда, напр. `Jev (DigitalOcean -> OpenRouter)`.
+от `.env`. Дропдаунът показва реда, напр. `Jev (TypeSafe API -> DigitalOcean)`.
 
-Друга версия на Jev се задава с `TYPESAFE_DEFAULT_MODEL` (напр. по-нова от `typesafe-jev-1.13.0`).
-
-За директния API на TypeSafe задай `TYPESAFE_API_KEY` и по желание `TYPESAFE_BASE_URL`
-(той важи само за този ключ).
+Друга версия на Jev се задава с `TYPESAFE_DEFAULT_MODEL`. Тя важи за всички
+ключове, а TypeSafe и DigitalOcean наричат модела различно (`jev-latest` и
+`typesafe-jev-1.13.0`).
 
 Ако една променлива е и в средата, и в `.env`, стойността ѝ се взема от средата.
 

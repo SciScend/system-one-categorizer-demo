@@ -11,8 +11,9 @@
 
 Бекендове за стъпка 1 (еднакъв въпрос, еднакъв формат на отговора):
   laya - convaiinnovations/laya-multilingual локално на процесора (по подразбиране)
-  jev  - TypeSafe API чрез typesafe-sdk; нужен е поне един от DIGITALOCEAN_MODEL_ACCESS_KEY (DigitalOcean),
-         OPENROUTER_API_KEY (OpenRouter), AI_GATEWAY_API_KEY (Vercel AI Gateway) или TYPESAFE_API_KEY.
+  jev  - TypeSafe API чрез typesafe-sdk; нужен е TYPESAFE_API_KEY (директно към TypeSafe, основният начин)
+         или ключ за посредник: DIGITALOCEAN_MODEL_ACCESS_KEY (DigitalOcean), OPENROUTER_API_KEY (OpenRouter),
+         AI_GATEWAY_API_KEY (Vercel AI Gateway).
          При няколко ключа се опитват по реда им в .env; ако един откаже, минава към следващия.
 И двата се избират от падащото меню в UI-то; вторият се зарежда при първа заявка.
 Стъпка 2 иска работещ Ollama с изтеглен NAMER_MODEL. Без него новата
@@ -68,11 +69,11 @@ def build_questions(categories: dict[str, str]) -> dict:
 class JevBackend:
     """Jev през всеки маршрут, за който има ключ. Ред: както са ключовете в .env;
     ако първият маршрут откаже, заявката минава през следващия."""
-    ROUTES = {  # променлива с ключа -> (адрес, име в UI-то, модел)
+    ROUTES = {  # променлива с ключа -> (адрес, име в UI-то, модел); основният маршрут е първи
+        "TYPESAFE_API_KEY": (None, "TypeSafe API", None),  # адрес от TYPESAFE_BASE_URL или SDK-то (api.typesafe.ai), модел jev-latest
         "DIGITALOCEAN_MODEL_ACCESS_KEY": (DO_URL, "DigitalOcean", DO_MODEL),
         "OPENROUTER_API_KEY": (OPENROUTER_URL, "OpenRouter", None),
         "AI_GATEWAY_API_KEY": (GATEWAY_URL, "Vercel AI Gateway", None),
-        "TYPESAFE_API_KEY": (None, "TypeSafe API", None),  # адрес от TYPESAFE_BASE_URL или SDK-то
     }
 
     @classmethod
