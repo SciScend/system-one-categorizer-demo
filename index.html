@@ -179,7 +179,6 @@ summary { cursor: pointer; color: var(--ink-2); font-size: 14px; }
       <label class="field"><textarea id="body" placeholder="Текст на поста..."></textarea></label>
       <div class="row">
         <button class="btn btn-primary" id="suggest">Предложи категория</button>
-        <span class="hint">Ctrl+Enter</span>
       </div>
       <div class="examples" id="examples"><span class="hint">Опитай с пример:</span></div>
       <div id="suggestion"><div class="sugg-empty">Тук ще се появи предложението на модела.</div></div>
@@ -353,10 +352,13 @@ async function suggest() {
   setSuggestion(el("div", { class: "sugg-empty" }, el("span", { class: "spinner" }),
     info && !info.loaded ? `Зареждам ${info.name}... (първия път е по-бавно)` : "Моделът чете поста..."));
   try {
-    current = await api("/api/suggest", { title, body, backend });
+    const result = await api("/api/suggest", { title, body, backend });
     if (info) info.loaded = true;
+    if ($("#backend").value !== backend) return;  // моделът е сменен, докато чакахме; отговорът е от стария
+    current = result;
     select({ ...current.pick });
   } catch (err) {
+    if ($("#backend").value !== backend) return;
     setSuggestion(el("div", { class: "sugg-empty error" }, err.message));
   } finally {
     $("#suggest").disabled = false;
@@ -440,9 +442,12 @@ $("#suggest").addEventListener("click", suggest);
 $("#backend").addEventListener("change", (e) => {
   try { localStorage.setItem(BACKEND_KEY, e.target.value); } catch {}
   renderLoading();
-  if (current) suggest();  // има предложение на екрана -> питай и новия модел
+  // смяната само избира модела; той тръгва едва с "Предложи категория"
+  if (current || $("#suggest").disabled) {  // предложение на екрана или заявка, която още върви
+    current = selected = null;  // старото предложение е от другия модел
+    setSuggestion(el("div", { class: "sugg-empty" }, "Натисни 'Предложи категория', за да попиташ новия модел."));
+  }
 });
-document.addEventListener("keydown", (e) => { if (e.key === "Enter" && (e.ctrlKey || e.metaKey)) suggest(); });
 $("#reset").addEventListener("click", async () => {
   if (!confirm("Да върна блога към началните постове и категории?")) return;
   state = await api("/api/reset", {}); filter = null; freshPost = freshCat = null; render();
