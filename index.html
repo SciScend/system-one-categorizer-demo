@@ -413,12 +413,20 @@ async function watchLoading() {
   }
 }
 
+// примерът само попълва формата; моделът тръгва едва с "Предложи категория"
+function useExample(ex) {
+  $("#title").value = ex.title; $("#body").value = ex.body;
+  current = selected = null;  // старото предложение е за друг текст
+  setSuggestion(el("div", { class: "sugg-empty" }, "Тук ще се появи предложението на модела."));
+  $("#suggest").focus();
+}
+
 async function init() {
   state = await api("/api/state");
   renderBackends();
   const box = $("#examples");
   state.examples.forEach((ex) => box.append(el("button", { class: "chip", title: ex.body,
-    onclick: () => { $("#title").value = ex.title; $("#body").value = ex.body; suggest(); } }, ex.title)));
+    onclick: () => useExample(ex) }, ex.title)));
   render();
   watchLoading();
 }
