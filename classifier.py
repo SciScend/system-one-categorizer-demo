@@ -110,6 +110,7 @@ class JevBackend:
         from typesafe_sdk import RetryPolicy, TypeSafeClient  # само ако се ползва този бекенд
         self.name = self.label()
         self.model = "Jev"  # модел и версия от последния отговор
+        self.tokens = None  # входни + изходни токени от последния отговор; None, ако API-то не ги е дало
         self.clients = []  # (име, клиент) по реда на опитване
         routes = self._routes()
         for i, var in enumerate(routes):
@@ -135,6 +136,9 @@ class JevBackend:
                     raise
                 log.warning(f"Jev през {route_name} не отговори ({error}); опитвам {self.clients[i + 1][0]}")
         self.model = self.model_label(response.model)
+        usage = response.usage
+        self.tokens = (None if usage.input_tokens is None and usage.output_tokens is None
+                       else (usage.input_tokens or 0) + (usage.output_tokens or 0))
         return {qid: {"choice": a.choice, "confidence": a.confidence, "probabilities": dict(a.probabilities)}
                 for qid, a in response.choices.items()}
 
@@ -142,6 +146,7 @@ class JevBackend:
 class LayaBackend:
     model = "Laya multilingual"
     name = f"{model} (локално)"  # кратко, за да се събира в менюто
+    tokens = None  # входни + изходни токени от последната заявка
 
     @classmethod
     def label(cls) -> str:
@@ -157,7 +162,10 @@ class LayaBackend:
         self.agent = laya.load(model)  # 15-45 s; зарежда се веднъж при старта
 
     def ask(self, state: dict, questions: dict) -> dict:
-        answers = self.agent.predict(state, questions)["answers"]
+        result = self.agent.predict(state, questions)
+        answers = result["answers"]
+        usage = result.get("usage") or {}
+        self.tokens = (usage.get("input_tokens") or 0) + (usage.get("output_tokens") or 0) if usage else None
         return {qid: {"choice": a["choice"], "confidence": a["confidence"], "probabilities": a["probabilities"]}
                 for qid, a in answers.items()}
 
@@ -251,8 +259,10 @@ def _ranked(probabilities: dict[str, float], keep=None) -> list[dict]:
 def suggest(backend, namer, title: str, body: str, categories: dict[str, str]) -> dict:
     """Предложение за категория + всичко, което UI-то показва като обяснение."""
     started = time.perf_counter()
+    tokens = None
     if categories:
         existing = backend.ask({"title": title, "body": body}, build_questions(categories))["existing"]
+        tokens = backend.tokens
     else:  # празен блог: няма от какво да се избира, направо нова категория
         existing = {"choice": OTHER, "confidence": 1.0, "probabilities": {OTHER: 1.0}}
     elapsed_ms = round((time.perf_counter() - started) * 1000)
@@ -280,4 +290,5 @@ def suggest(backend, namer, title: str, body: str, categories: dict[str, str]) -
         "model": backend.model,
         "namer": namer.name if namer else None,
         "elapsed_ms": elapsed_ms,
+        "tokens": tokens,  # само за избора на категория (стъпка 1), без името от Ollama
     }

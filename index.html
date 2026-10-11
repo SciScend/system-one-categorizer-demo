@@ -336,7 +336,8 @@ function renderSuggestion() {
     el("div", { class: "explain" },
       bars("Към коя съществуваща категория?", `увереност ${pct(ex.existing_confidence)}`, ex.existing, nice)),
     el("div", { class: "meta" },
-      `${r.model} | ${r.elapsed_ms} ms. Правило: ако моделът посочи категория, тя печели; ако каже 'друга тема' - ` +
+      `${r.model} | ${r.elapsed_ms} ms.` + (r.tokens != null ? ` | ${r.tokens} tokens` : ""), el("br"),
+      "Правило: ако моделът посочи категория, тя печели; ако каже 'друга тема' - " +
       (r.namer ? `${r.namer} измисля име на новата.` : "името на новата пишеш ти (няма Ollama или модела).")));
 
   setSuggestion(el("div", { class: "card", style: "box-shadow:none;background:var(--surface-2);border:0" },
