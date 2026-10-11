@@ -22,10 +22,13 @@
 
 import importlib.util
 import json
+import logging
 import os
 import threading
 import time
 import urllib.request
+
+log = logging.getLogger("blog")  # общ с app.py; INFO се вижда само с --verbose
 
 OTHER = "__other__"          # вариантът "друга тема" във въпроса existing
 MIN_CONFIDENCE = 0.5         # под това предложението е означено като несигурно
@@ -130,7 +133,7 @@ class JevBackend:
             except TypeSafeError as error:
                 if i == len(self.clients) - 1:
                     raise
-                print(f"Jev през {route_name} не отговори ({error}); опитвам {self.clients[i + 1][0]}", flush=True)
+                log.warning(f"Jev през {route_name} не отговори ({error}); опитвам {self.clients[i + 1][0]}")
         self.model = self.model_label(response.model)
         return {qid: {"choice": a.choice, "confidence": a.confidence, "probabilities": dict(a.probabilities)}
                 for qid, a in response.choices.items()}
@@ -138,7 +141,7 @@ class JevBackend:
 
 class LayaBackend:
     model = "Laya multilingual"
-    name = f"{model} (локално, CPU)"
+    name = f"{model} (локално)"  # кратко, за да се събира в менюто
 
     @classmethod
     def label(cls) -> str:
@@ -198,9 +201,9 @@ class OllamaNamer:
         try:
             _ollama("/api/generate", {"model": self.model, "keep_alive": "30m"})
         except OSError as error:
-            print(f"{self.name}: не се зареди ({error})", flush=True)
+            log.warning(f"{self.name}: не се зареди ({error})")
             return
-        print(f"{self.name}: зареден ({time.monotonic() - started:.0f} s)", flush=True)
+        log.info(f"{self.name}: зареден ({time.monotonic() - started:.0f} s)")
 
     @staticmethod
     def _prompt(title: str, body: str, categories: dict[str, str]) -> str:

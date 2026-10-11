@@ -54,6 +54,7 @@ h1 { font-size: 26px; line-height: 1.2; margin: 0; letter-spacing: -.01em; }
 .badge select { font: inherit; font-weight: 600; color: var(--ink); background: transparent; border: 0; padding: 0 2px; cursor: pointer; max-width: 260px; }
 .badge select:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
 .badge select option { background: var(--surface); color: var(--ink); }
+.badge select.loading, .badge select option.loading { color: var(--ink-3); }  /* моделът още се зарежда */
 
 button { font: inherit; cursor: pointer; }
 .btn { border: 1px solid var(--border); background: var(--surface); color: var(--ink); border-radius: 8px; padding: 7px 14px; }
@@ -148,6 +149,8 @@ summary { cursor: pointer; color: var(--ink-2); font-size: 14px; }
 @keyframes flash { 0% { background: var(--surface-2); } 100% { background: transparent; } }
 .empty { color: var(--ink-3); padding: 12px 0; }
 .spinner { display: inline-block; width: 14px; height: 14px; border: 2px solid var(--bar-track); border-top-color: var(--accent); border-radius: 50%; animation: spin .8s linear infinite; vertical-align: -2px; margin-right: 8px; }
+.spinner[hidden] { display: none; }
+.badge .spinner { width: 11px; height: 11px; margin: 0 2px 0 4px; cursor: help; }
 @keyframes spin { to { transform: rotate(360deg); } }
 @media (prefers-reduced-motion: reduce) { * { animation: none !important; } }
 </style>
@@ -160,7 +163,7 @@ summary { cursor: pointer; color: var(--ink-2); font-size: 14px; }
       <p class="sub">Пишеш пост, System One моделът предлага категория: съществуваща или нова.</p>
     </div>
     <div class="head-right">
-      <label class="badge">Модел: <select id="backend" title="Кой System One модел избира категорията"></select></label>
+      <label class="badge">Модел: <span class="spinner" id="backend-loading" role="status" hidden></span><select id="backend" title="Кой System One модел избира категорията"></select></label>
       <button class="btn btn-ghost" id="reset" title="Връща блога към началните 8 поста и 4 категории">Нулирай</button>
     </div>
   </header>
@@ -384,6 +387,30 @@ function renderBackends() {
   $("#backend").replaceChildren(...state.backends.map((b) => el("option", {
     value: b.id, disabled: !!b.unavailable, selected: b.id === value,
   }, b.unavailable ? `${b.name} - ${b.unavailable}` : b.name)));
+  renderLoading();
+}
+
+// модел, който още се зарежда, е блед в менюто; ако е избраният - и въртящ се кръг пред името му
+function renderLoading() {
+  const menu = $("#backend");
+  for (const b of state.backends) menu.querySelector(`option[value="${b.id}"]`)?.classList.toggle("loading", b.loading);
+  const chosen = state.backends.find((b) => b.id === menu.value);
+  const loading = !!chosen?.loading;
+  menu.classList.toggle("loading", loading);
+  const icon = $("#backend-loading");
+  icon.hidden = !loading;
+  icon.title = loading ? `${chosen.name} се зарежда във фона. Заявка към него ще изчака.` : "";
+  icon.setAttribute("aria-label", icon.title);
+}
+
+// моделите се зареждат във фона след старта: питаме сървъра, докато свършат,
+// без да пипаме менюто, за да не се затвори, ако е отворено
+async function watchLoading() {
+  while (state.backends.some((b) => b.loading)) {
+    await new Promise((resolve) => setTimeout(resolve, 2000));
+    try { state.backends = (await api("/api/state")).backends; } catch { continue; }
+    renderLoading();
+  }
 }
 
 async function init() {
@@ -393,11 +420,13 @@ async function init() {
   state.examples.forEach((ex) => box.append(el("button", { class: "chip", title: ex.body,
     onclick: () => { $("#title").value = ex.title; $("#body").value = ex.body; suggest(); } }, ex.title)));
   render();
+  watchLoading();
 }
 
 $("#suggest").addEventListener("click", suggest);
 $("#backend").addEventListener("change", (e) => {
   try { localStorage.setItem(BACKEND_KEY, e.target.value); } catch {}
+  renderLoading();
   if (current) suggest();  // има предложение на екрана -> питай и новия модел
 });
 document.addEventListener("keydown", (e) => { if (e.key === "Enter" && (e.ctrlKey || e.metaKey)) suggest(); });

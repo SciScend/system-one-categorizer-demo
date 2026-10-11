@@ -4,6 +4,7 @@
     python app.py                  # започва с Jev, ако има ключ (TYPESAFE_API_KEY или ключ за посредник); иначе с Laya
     python app.py --backend laya   # започва с Laya локално
     python app.py --port 8771
+    python app.py --verbose        # показва и зареждането на моделите и заявките
 После отвори http://127.0.0.1:8770
 
 Моделът за стъпка 1 (Jev или Laya) се сменя от падащото меню в UI-то;
@@ -18,6 +19,8 @@
 
 import argparse
 import json
+import logging
+import os
 import shutil
 import sys
 import threading
@@ -31,10 +34,12 @@ HERE = Path(__file__).resolve().parent
 SEED = HERE / "seed.json"
 DATA = HERE / "data" / "blog.json"
 MAX_TEXT = 20_000  # символа; System One моделите четат текст, не романи
+log = logging.getLogger("blog")  # INFO (зареждане, заявки) само с --verbose; WARNING винаги
 
 lock = threading.Lock()  # една заявка към модел наведнъж; пази и файла
 backends = {}  # id -> зареден бекенд; зареждат се във фона след старта
 loading = {kind: threading.Lock() for kind in BACKENDS}  # всеки бекенд се зарежда само веднъж
+pending = set()  # id-та, които фоновата нишка още не е опитала; UI-то ги показва като "зарежда се"
 default_backend = "jev"
 namer = None  # локален LLM за имена на нови категории; None без Ollama
 
@@ -78,9 +83,11 @@ def load_backends(kinds: list[str]) -> None:
         try:
             backend = get_backend(kind)
         except Exception as error:  # заявка към него ще опита пак и ще покаже грешката в UI-то
-            print(f"{BACKENDS[kind].label()}: не се зареди ({error})", flush=True)
+            log.warning(f"{BACKENDS[kind].label()}: не се зареди ({error})")
             continue
-        print(f"{backend.name}: зареден ({time.monotonic() - started:.0f} s)", flush=True)
+        finally:
+            pending.discard(kind)
+        log.info(f"{backend.name}: зареден ({time.monotonic() - started:.0f} s)")
 
 
 def public_state(blog: dict) -> dict:
@@ -92,7 +99,7 @@ def public_state(blog: dict) -> dict:
         "categories": [{"name": n, "description": d, "count": counts[n]} for n, d in blog["categories"].items()],
         "posts": list(reversed(blog["posts"])),  # най-новите отгоре
         "backend": default_backend,
-        "backends": [{**o, "loaded": o["id"] in backends} for o in backend_options()],
+        "backends": [{**o, "loaded": o["id"] in backends, "loading": o["id"] in pending} for o in backend_options()],
         "namer": namer.name if namer else None,
         "examples": [{"title": p["title"], "body": p["body"]} for p in read_json(HERE / "test_posts.json")["posts"]],
     }
@@ -171,7 +178,7 @@ class Handler(BaseHTTPRequestHandler):
             self._send(404, {"error": "Няма такъв адрес"})
 
     def log_message(self, fmt, *args) -> None:
-        sys.stderr.write("blog: " + fmt % args + "\n")
+        log.info("blog: " + fmt % args)
 
 
 def main() -> None:
@@ -180,7 +187,13 @@ def main() -> None:
     parser = argparse.ArgumentParser(description="Блог с автоматични категории")
     parser.add_argument("--backend", choices=list(BACKENDS), help="по подразбиране jev, ако има ключ; иначе laya")
     parser.add_argument("--port", type=int, default=8770)
+    parser.add_argument("--verbose", action="store_true", help="показва зареждането на моделите и заявките")
     args = parser.parse_args()
+    logging.basicConfig(format="%(message)s")  # чуждите библиотеки остават на WARNING
+    if args.verbose:
+        log.setLevel(logging.INFO)
+    else:
+        os.environ.setdefault("HF_HUB_DISABLE_PROGRESS_BARS", "1")  # лентите на Laya от Hugging Face
 
     options = {o["id"]: o for o in backend_options()}
     default_backend = args.backend or ("jev" if not options["jev"]["unavailable"] else "laya")
@@ -189,7 +202,7 @@ def main() -> None:
     print("Проверявам Ollama...", flush=True)
     namer = make_namer()
     if namer:
-        print(f"Зареждам {namer.name} във фона...", flush=True)
+        log.info(f"Зареждам {namer.name} във фона...")
     try:
         server = ThreadingHTTPServer(("127.0.0.1", args.port), Handler)
     except OSError:
@@ -197,6 +210,7 @@ def main() -> None:
     others = [f"{o['name']} ({o['unavailable'] or 'зарежда се във фона'})" for kind, o in options.items() if kind != default_backend]
     print(f"Бекенд: {options[default_backend]['name']}; в менюто още: {', '.join(others)}\nНови категории: {namer.name if namer else 'ръчно (няма Ollama или модела)'}\nОтвори http://127.0.0.1:{args.port}  (Ctrl+C за спиране)", flush=True)
     usable = sorted((kind for kind, o in options.items() if not o["unavailable"]), key=lambda kind: kind != default_backend)
+    pending.update(usable)
     threading.Thread(target=load_backends, args=(usable,), daemon=True).start()  # първо този по подразбиране
     server.serve_forever()
 
